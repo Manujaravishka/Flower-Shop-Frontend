@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import RoleRoute from "@/components/RoleRoute";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import AdminLayout from "@/layouts/AdminLayout";
 import AccountLayout from "@/layouts/AccountLayout";
 import Index from "./pages/Index";
@@ -46,6 +47,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <WhatsAppButton />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />

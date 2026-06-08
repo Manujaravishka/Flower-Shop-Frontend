@@ -83,27 +83,25 @@ const Customize = () => {
 
     setIsGenerating(true);
     try {
-      const response = await aiApi.generate({
+      const data = await aiApi.generate({
         imageUrls: selectedImages,
         prompt: prompt || "Create a beautiful flower arrangement",
       });
 
-      if (
-        response.data.message &&
-        typeof response.data.message === "string" &&
-        response.data.message.includes("error")
-      ) {
-        throw new Error("AI generation limit reached. Please try again later.");
+      if (!data.success) {
+        throw new Error(data.message || "Generation failed");
       }
 
-      setGeneratedImage(response.data.imageUrl);
+      if (!data.imageUrl) {
+        throw new Error("No image returned");
+      }
+
+      setGeneratedImage(data.imageUrl);
       toast.success("Design generated");
     } catch (error: any) {
       console.error("Generation error:", error);
       toast.error(error.message || "Failed to generate design. Please try again.");
-      setGeneratedImage(
-        "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=900&h=900&fit=crop"
-      );
+      setGeneratedImage(null);
     } finally {
       setIsGenerating(false);
     }
@@ -178,8 +176,8 @@ const Customize = () => {
                         className="w-10 h-10 rounded-xl flex items-center justify-center shadow-soft"
                         style={{
                           background:
-                            "linear-gradient(135deg, rgba(27, 67, 50, 0.1), rgba(244, 194, 194, 0.18))",
-                          border: "1px solid rgba(27, 67, 50, 0.15)",
+                            "linear-gradient(135deg, rgba(74, 29, 107, 0.1), rgba(244, 194, 194, 0.18))",
+                          border: "1px solid rgba(74, 29, 107, 0.15)",
                         }}
                       >
                         <ImageIcon
@@ -256,7 +254,7 @@ const Customize = () => {
                                     className="w-8 h-8 rounded-full flex items-center justify-center shadow-soft"
                                     style={{
                                       background:
-                                        "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                     }}
                                   >
                                     <Check
@@ -286,8 +284,8 @@ const Customize = () => {
                         className="w-10 h-10 rounded-xl flex items-center justify-center shadow-soft"
                         style={{
                           background:
-                            "linear-gradient(135deg, rgba(27, 67, 50, 0.1), rgba(244, 194, 194, 0.18))",
-                          border: "1px solid rgba(27, 67, 50, 0.15)",
+                            "linear-gradient(135deg, rgba(74, 29, 107, 0.1), rgba(244, 194, 194, 0.18))",
+                          border: "1px solid rgba(74, 29, 107, 0.15)",
                         }}
                       >
                         <Palette
@@ -358,8 +356,8 @@ const Customize = () => {
                         className="w-10 h-10 rounded-xl flex items-center justify-center shadow-soft"
                         style={{
                           background:
-                            "linear-gradient(135deg, rgba(27, 67, 50, 0.1), rgba(244, 194, 194, 0.18))",
-                          border: "1px solid rgba(27, 67, 50, 0.15)",
+                            "linear-gradient(135deg, rgba(74, 29, 107, 0.1), rgba(244, 194, 194, 0.18))",
+                          border: "1px solid rgba(74, 29, 107, 0.15)",
                         }}
                       >
                         <Sparkles
@@ -392,7 +390,7 @@ const Customize = () => {
                       className="mt-5 w-full h-12 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
                       style={{
                         background:
-                          "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                          "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                       }}
                     >
                       {isGenerating ? (
@@ -507,7 +505,7 @@ const Customize = () => {
                               className="flex-1 h-11 rounded-full text-primary-foreground text-sm font-medium shadow-soft flex items-center justify-center gap-1.5 hover:shadow-glow transition-all"
                               style={{
                                 background:
-                                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                               }}
                             >
                               <ShoppingBag

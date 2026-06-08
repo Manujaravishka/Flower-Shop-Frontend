@@ -100,7 +100,7 @@ const Categories = () => {
         </section>
 
         {/* Filters + Toolbar */}
-        <div className="sticky top-20 z-30 bg-cream-50/85 backdrop-blur-xl border-y border-cream-200/80 shadow-soft">
+        <div className="sticky top-20 z-30 bg-white/85 backdrop-blur-xl border-y border-border/80 shadow-soft">
           <div className="container mx-auto px-4 lg:px-6">
             <MotionSection>
               <div className="py-4 flex gap-2 overflow-x-auto">
@@ -123,7 +123,7 @@ const Categories = () => {
                       filter === cat.id
                         ? {
                             background:
-                              "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                              "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                           }
                         : undefined
                     }

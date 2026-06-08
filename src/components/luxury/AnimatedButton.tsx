@@ -21,7 +21,7 @@ const baseStyles =
 
 const variantStyles: Record<Variant, string> = {
   primary:
-    "bg-primary text-primary-foreground shadow-soft hover:shadow-glow hover:-translate-y-0.5 hover:bg-[#1B4332]",
+    "bg-primary text-primary-foreground shadow-soft hover:shadow-glow hover:-translate-y-0.5 hover:bg-[#4A1D6B]",
   gold:
     "text-primary shadow-soft hover:shadow-glow-gold hover:-translate-y-0.5",
   secondary:

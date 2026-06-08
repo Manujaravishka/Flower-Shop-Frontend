@@ -39,6 +39,7 @@ const ProductCardEnhanced = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -74,7 +75,7 @@ const ProductCardEnhanced = ({
           className="relative h-full rounded-3xl overflow-hidden flex flex-col bg-white border border-cream-200/70 transition-all duration-500 group-hover:shadow-elevated group-hover:border-cream-200"
           style={{
             boxShadow:
-              "inset 0 1px 0 0 rgba(255, 255, 255, 0.9), 0 14px 40px -22px rgba(27, 67, 50, 0.14)",
+              "inset 0 1px 0 0 rgba(255, 255, 255, 0.9), 0 14px 40px -22px rgba(74, 29, 107, 0.14)",
           }}
         >
           {/* Subtle top hairline */}
@@ -85,11 +86,12 @@ const ProductCardEnhanced = ({
             {!imgLoaded && (
               <div className="absolute inset-0 bg-gradient-to-br from-cream-100 to-cream-200 animate-pulse" />
             )}
-            {imageUrl ? (
+            {imageUrl && !imgError ? (
               <motion.img
                 src={imageUrl}
                 alt={name}
                 onLoad={() => setImgLoaded(true)}
+                onError={() => setImgError(true)}
                 className="w-full h-full object-cover"
                 initial={{ scale: 1.06, opacity: 0 }}
                 animate={{
@@ -184,7 +186,7 @@ const ProductCardEnhanced = ({
                   !isAdded
                     ? {
                         background:
-                          "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                          "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                       }
                     : undefined
                 }

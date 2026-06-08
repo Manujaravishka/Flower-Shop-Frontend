@@ -139,14 +139,13 @@ const ProductsTab = () => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        await giftApi.updateDetails({
-          giftId: editingProduct._id,
+        await giftApi.updateDetails(editingProduct._id, {
           name: formData.name,
           description: formData.description,
           price: Number(formData.price),
           colour: formData.colour,
           size: formData.size,
-          category: formData.category,
+          category: [formData.category],
         });
 
         const publicIdsToDelete = imageSlots
@@ -155,10 +154,7 @@ const ProductsTab = () => {
 
         if (publicIdsToDelete.length > 0) {
           publicIdsToDelete.forEach(async (publicId) => {
-            const deletingImg = await giftApi.deleteImages({
-              giftId: editingProduct._id,
-              publicId,
-            });
+            const deletingImg = await giftApi.deleteImages(editingProduct._id, publicId);
             console.log("Deleted image response:", deletingImg);
           });
         }
@@ -169,9 +165,8 @@ const ProductsTab = () => {
 
         if (newFiles.length > 0) {
           const fd = new FormData();
-          fd.append("giftId", editingProduct._id);
           newFiles.forEach((file) => fd.append(IMAGE_FIELD_KEY, file));
-          await giftApi.updateImages(fd);
+          await giftApi.updateImages(editingProduct._id, fd);
         }
 
         toast.success("Product updated successfully");
@@ -234,7 +229,7 @@ const ProductsTab = () => {
               className="rounded-full text-primary-foreground shadow-soft hover:shadow-glow transition-all"
               style={{
                 background:
-                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -326,6 +321,9 @@ const ProductsTab = () => {
                     <SelectContent>
                       <SelectItem value="POT">Pot</SelectItem>
                       <SelectItem value="BOQUETS">Bouquet</SelectItem>
+                      <SelectItem value="FLOWERS">Flowers</SelectItem>
+                      <SelectItem value="KEYTAG">Keytag</SelectItem>
+                      <SelectItem value="GIFTBOX">Gift Box</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -486,7 +484,7 @@ const ProductsTab = () => {
                 className="w-full rounded-full text-primary-foreground shadow-soft"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                 }}
               >
                 {editingProduct ? "Update Product" : "Create Product"}
@@ -527,7 +525,7 @@ const ProductsTab = () => {
                     className="w-full h-full flex items-center justify-center"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(27,67,50,0.12), rgba(244,194,194,0.25))",
+                        "linear-gradient(135deg, rgba(74,29,107,0.12), rgba(244,194,194,0.25))",
                     }}
                   >
                     <span className="text-5xl">🌸</span>

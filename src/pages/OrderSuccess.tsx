@@ -39,7 +39,7 @@ const OrderSuccess = () => {
                     className="absolute inset-0 rounded-full animate-pulse-soft"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(27,67,50,0.18), transparent 70%)",
+                        "radial-gradient(circle, rgba(74,29,107,0.18), transparent 70%)",
                     }}
                   />
                   <div
@@ -54,7 +54,7 @@ const OrderSuccess = () => {
                     className="absolute inset-4 rounded-full flex items-center justify-center shadow-glow"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                     }}
                   >
                     <Check
@@ -139,7 +139,7 @@ const OrderSuccess = () => {
                     className="group inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                     }}
                   >
                     <ShoppingBag className="w-4 h-4" strokeWidth={2} />

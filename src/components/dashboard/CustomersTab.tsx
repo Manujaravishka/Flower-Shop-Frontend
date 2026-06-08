@@ -140,7 +140,7 @@ const CustomersTab = () => {
               className="rounded-full text-primary-foreground shadow-soft hover:shadow-glow transition-all"
               style={{
                 background:
-                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -212,7 +212,7 @@ const CustomersTab = () => {
                 className="w-full rounded-full text-primary-foreground shadow-soft"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                 }}
               >
                 {editingCustomer ? "Update Customer" : "Create Customer"}

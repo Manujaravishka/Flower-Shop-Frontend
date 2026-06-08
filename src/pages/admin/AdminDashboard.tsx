@@ -89,8 +89,8 @@ const AdminDashboard = () => {
                           className="w-10 h-10 rounded-xl flex items-center justify-center"
                           style={{
                             background:
-                              "linear-gradient(135deg, rgba(27,67,50,0.1), rgba(244,194,194,0.18))",
-                            border: "1px solid rgba(27, 67, 50, 0.15)",
+                              "linear-gradient(135deg, rgba(74,29,107,0.1), rgba(244,194,194,0.18))",
+                            border: "1px solid rgba(74, 29, 107, 0.15)",
                           }}
                         >
                           <stat.icon className="w-4 h-4 text-primary" strokeWidth={1.8} />
@@ -118,8 +118,8 @@ const AdminDashboard = () => {
                       className="w-10 h-10 rounded-xl flex items-center justify-center"
                       style={{
                         background:
-                          "linear-gradient(135deg, rgba(27,67,50,0.1), rgba(244,194,194,0.18))",
-                        border: "1px solid rgba(27, 67, 50, 0.15)",
+                          "linear-gradient(135deg, rgba(74,29,107,0.1), rgba(244,194,194,0.18))",
+                        border: "1px solid rgba(74, 29, 107, 0.15)",
                       }}
                     >
                       <ImageIcon className="w-4 h-4 text-primary" strokeWidth={1.8} />

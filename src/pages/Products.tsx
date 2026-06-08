@@ -63,7 +63,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = await giftApi.getAll();
+      const data = await giftApi.getAll({ category: "POT,BOQUETS" });
       setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch products");
@@ -137,7 +137,7 @@ const Products = () => {
       </section>
 
       {/* Sticky filter bar */}
-      <div className="sticky top-20 z-30 bg-cream-50/85 backdrop-blur-xl border-y border-cream-200/80 shadow-soft">
+      <div className="sticky top-20 z-30 bg-white/85 backdrop-blur-xl border-y border-border/80 shadow-soft">
         <div className="container mx-auto px-4 lg:px-6">
           <div className="py-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="flex items-center gap-3 flex-1 w-full sm:max-w-md">
@@ -181,12 +181,12 @@ const Products = () => {
                     selectedCategory === cat
                       ? {
                           background:
-                            "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                            "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                         }
                       : undefined
                   }
                 >
-                  {cat === "BOQUETS" ? "Bouquets" : "Pots"}
+                  {cat === "BOQUETS" ? "Bouquets" : cat === "GIFTBOX" ? "Gift Boxes" : cat.charAt(0) + cat.slice(1).toLowerCase()}
                 </motion.button>
               ))}
 

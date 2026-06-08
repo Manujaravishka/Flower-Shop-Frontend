@@ -214,14 +214,14 @@ const Register = () => {
                     className="absolute inset-0 rounded-full blur-xl"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(27,67,50,0.25), rgba(200,162,74,0.2))",
+                        "linear-gradient(135deg, rgba(74,29,107,0.25), rgba(200,162,74,0.2))",
                     }}
                   />
                   <div
                     className="relative w-full h-full rounded-full flex items-center justify-center shadow-glow"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                     }}
                   >
                     <Flower2
@@ -486,7 +486,7 @@ const Register = () => {
                   className="group w-full h-12 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   {isLoading ? (

@@ -23,7 +23,7 @@ const CategoryCard = ({
       className="group relative overflow-hidden rounded-3xl aspect-[3/4] block"
       style={{
         boxShadow:
-          "0 24px 60px -28px rgba(27, 67, 50, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.5)",
+          "0 24px 60px -28px rgba(74, 29, 107, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.5)",
       }}
     >
       <div className="absolute inset-0">
@@ -58,7 +58,7 @@ const CategoryCard = ({
           className="w-2 h-2 rounded-full"
           style={{
             background:
-              "linear-gradient(135deg, #1B4332 0%, #C8A24A 100%)",
+              "linear-gradient(135deg, #4A1D6B 0%, #C8A24A 100%)",
           }}
         />
         <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/85">

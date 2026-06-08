@@ -63,9 +63,9 @@ const statusConfig: Record<
   processing: {
     icon: Package,
     label: "Processing",
-    bg: "rgba(27,67,50,0.1)",
-    text: "#1B4332",
-    border: "rgba(27,67,50,0.25)",
+    bg: "rgba(74,29,107,0.1)",
+    text: "#4A1D6B",
+    border: "rgba(74,29,107,0.25)",
   },
   shipped: {
     icon: Truck,
@@ -77,9 +77,9 @@ const statusConfig: Record<
   delivered: {
     icon: CheckCircle,
     label: "Delivered",
-    bg: "rgba(27,67,50,0.18)",
-    text: "#0E2B1E",
-    border: "rgba(27,67,50,0.4)",
+    bg: "rgba(74,29,107,0.18)",
+    text: "#1F0D33",
+    border: "rgba(74,29,107,0.4)",
   },
   cancelled: {
     icon: XCircle,
@@ -105,15 +105,15 @@ const AdminOrderDetail = () => {
       try {
         const data = await orderApi.get(id);
         if (cancelled) return;
-        const found = (data as Order) ?? (data as { data?: Order })?.data ?? null;
-        if (!found) {
+        const found = data as Order;
+        if (!found || !found._id) {
           setError("Order not found");
           return;
         }
         setOrder(found);
         try {
           const cust = await customerApi.get(found.customerId);
-          const c = (cust as Customer) ?? (cust as { data?: Customer })?.data ?? null;
+          const c = cust as Customer;
           if (!cancelled) setCustomer(c);
         } catch {
           // best effort
@@ -136,7 +136,7 @@ const AdminOrderDetail = () => {
     if (!order) return;
     setSavingStatus(true);
     try {
-      await orderApi.updateStatus({ orderId: order._id, status });
+      await orderApi.updateStatus(order._id, status);
       setOrder({ ...order, status });
       toast.success("Status updated");
     } catch (err) {

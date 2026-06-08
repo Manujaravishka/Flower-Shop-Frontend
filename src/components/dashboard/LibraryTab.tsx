@@ -18,7 +18,9 @@ import LuxurySpinner from "@/components/luxury/LuxurySpinner";
 interface LibraryItem {
   _id: string;
   title: string;
-  mediaUrl: { url: string; public_id: string; _id: string }[];
+  imageUrl?: string;
+  url?: string;
+  publicId?: string;
 }
 
 const LibraryTab = () => {
@@ -53,7 +55,13 @@ const LibraryTab = () => {
     }
     try {
       const data = await libraryApi.findByName(searchTerm);
-      setItems(data.libraries || []);
+      if (Array.isArray(data)) {
+        setItems(data);
+      } else if (data && typeof data === "object" && "libraries" in data) {
+        setItems((data as { libraries: LibraryItem[] }).libraries);
+      } else {
+        setItems([]);
+      }
     } catch (error) {
       toast.error("Search failed");
     }
@@ -63,7 +71,7 @@ const LibraryTab = () => {
     e.preventDefault();
     try {
       if (editingItem) {
-        await libraryApi.updateTitle({ libraryId: editingItem._id, title });
+        await libraryApi.updateTitle(editingItem._id, title);
         toast.success("Library item updated");
       } else {
         const formData = new FormData();
@@ -136,7 +144,7 @@ const LibraryTab = () => {
               className="rounded-full text-primary-foreground shadow-soft hover:shadow-glow transition-all"
               style={{
                 background:
-                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -179,7 +187,7 @@ const LibraryTab = () => {
                 className="w-full rounded-full text-primary-foreground shadow-soft"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                 }}
               >
                 {editingItem ? "Update Image" : "Upload Image"}
@@ -241,20 +249,20 @@ const LibraryTab = () => {
         </Card>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {items.map((item) => (
+          {items.map((item) => {
+            const imageSrc = item.url ?? item.imageUrl;
+            return (
             <Card
               key={item._id}
               className="overflow-hidden bg-white border border-cream-200/80 shadow-soft hover:shadow-card hover:border-primary/20 transition-all group"
             >
               <div
                 className="relative aspect-square bg-cream-100 cursor-pointer"
-                onClick={() =>
-                  item.mediaUrl?.[0]?.url && setSelectedImage(item.mediaUrl[0].url)
-                }
+                onClick={() => imageSrc && setSelectedImage(imageSrc)}
               >
-                {item.mediaUrl && item.mediaUrl.length > 0 ? (
+                {imageSrc ? (
                   <img
-                    src={item.mediaUrl[0].url}
+                    src={imageSrc}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -263,7 +271,7 @@ const LibraryTab = () => {
                     className="w-full h-full flex items-center justify-center"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(27,67,50,0.12), rgba(244,194,194,0.25))",
+                        "linear-gradient(135deg, rgba(74,29,107,0.12), rgba(244,194,194,0.25))",
                     }}
                   >
                     <ImageIcon className="w-10 h-10 text-foreground/40" />
@@ -300,7 +308,8 @@ const LibraryTab = () => {
                 </h3>
               </CardContent>
             </Card>
-          ))}
+            );
+          })}
         </div>
       )}
 

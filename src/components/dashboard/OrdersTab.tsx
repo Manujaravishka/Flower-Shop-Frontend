@@ -57,9 +57,9 @@ const statusConfig: Record<
   processing: {
     icon: Package,
     label: "Processing",
-    bg: "rgba(27,67,50,0.1)",
-    text: "#1B4332",
-    border: "rgba(27,67,50,0.25)",
+    bg: "rgba(74,29,107,0.1)",
+    text: "#4A1D6B",
+    border: "rgba(74,29,107,0.25)",
   },
   shipped: {
     icon: Truck,
@@ -71,9 +71,9 @@ const statusConfig: Record<
   delivered: {
     icon: CheckCircle,
     label: "Delivered",
-    bg: "rgba(27,67,50,0.18)",
-    text: "#0E2B1E",
-    border: "rgba(27,67,50,0.4)",
+    bg: "rgba(74,29,107,0.18)",
+    text: "#1F0D33",
+    border: "rgba(74,29,107,0.4)",
   },
   cancelled: {
     icon: XCircle,
@@ -106,13 +106,7 @@ const OrdersTab = () => {
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
-      const response = await orderApi.updateStatus({
-        orderId,
-        status: newStatus,
-      });
-      if (!response.success) {
-        toast.error("Failed to update order status");
-      }
+      await orderApi.updateStatus(orderId, newStatus);
       toast.success("Order status updated");
       fetchOrders();
     } catch (error) {

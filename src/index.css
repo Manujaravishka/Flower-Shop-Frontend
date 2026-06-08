@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Brand palette - Maison Florelle */
-    --background: 36 39% 96%;            /* #FAF7F2 cream */
+    --background: 0 0% 100%;             /* #FFFFFF white */
     --foreground: 0 0% 11%;              /* #1C1C1C */
 
     --card: 0 0% 100%;                   /* pure white surfaces */
@@ -14,42 +14,42 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
 
-    /* Primary: deep elegant green */
-    --primary: 155 47% 16%;              /* #1B4332 */
-    --primary-foreground: 36 39% 97%;    /* cream text on green */
+    /* Primary: deep elegant purple */
+    --primary: 270 55% 30%;              /* #4A1D6B */
+    --primary-foreground: 0 0% 100%;     /* white text on purple */
 
     /* Secondary: soft rose pink */
     --secondary: 350 71% 86%;            /* #F4C2C2 */
-    --secondary-foreground: 155 47% 16%;
+    --secondary-foreground: 270 55% 30%;
 
-    --muted: 36 28% 92%;                 /* muted cream */
+    --muted: 0 0% 96%;                   /* light gray */
     --muted-foreground: 0 0% 42%;        /* #6B6B6B */
 
     /* Accent: gold */
     --accent: 43 56% 54%;                /* #C8A24A */
-    --accent-foreground: 155 47% 16%;
+    --accent-foreground: 270 55% 30%;
 
     --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 18% 86%;
-    --input: 36 18% 90%;
-    --ring: 155 47% 22%;
+    --border: 0 0% 88%;
+    --input: 0 0% 94%;
+    --ring: 270 50% 32%;
 
-    --radius: 1.25rem;
+    --radius: 1rem;
 
-    /* Sage scale (deep elegant green family) */
-    --sage: 155 47% 16%;                 /* #1B4332 */
-    --sage-50: 150 30% 96%;
-    --sage-100: 152 30% 90%;
-    --sage-200: 153 32% 78%;
-    --sage-300: 154 32% 60%;
-    --sage-400: 154 36% 42%;
-    --sage-500: 154 42% 28%;
-    --sage-600: 155 46% 20%;
-    --sage-700: 155 47% 16%;
-    --sage-800: 155 50% 12%;
-    --sage-900: 155 56% 8%;
+    /* Purple scale (elegant floral family) */
+    --sage: 270 55% 30%;                 /* #4A1D6B */
+    --sage-50: 270 30% 95%;
+    --sage-100: 270 28% 88%;
+    --sage-200: 270 25% 78%;
+    --sage-300: 270 28% 62%;
+    --sage-400: 270 35% 48%;
+    --sage-500: 270 45% 38%;
+    --sage-600: 270 50% 28%;
+    --sage-700: 270 55% 24%;
+    --sage-800: 270 55% 18%;
+    --sage-900: 270 55% 10%;
 
     /* Rose */
     --rose: 350 71% 86%;                 /* #F4C2C2 */
@@ -57,10 +57,10 @@
     --rose-deep: 350 50% 55%;
 
     /* Cream scale */
-    --cream: 36 39% 96%;                 /* #FAF7F2 */
-    --cream-50: 36 60% 98%;
-    --cream-100: 36 50% 96%;
-    --cream-200: 36 32% 92%;
+    --cream: 0 0% 100%;                  /* #FFFFFF */
+    --cream-50: 0 0% 99%;
+    --cream-100: 0 0% 96%;
+    --cream-200: 0 0% 90%;
 
     /* Gold */
     --gold: 43 56% 54%;                  /* #C8A24A */
@@ -76,32 +76,32 @@
     --ink-800: 0 0% 14%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #1B4332 0%, #2D5A45 60%, #C8A24A 100%);
-    --gradient-soft: linear-gradient(180deg, #FAF7F2 0%, #F4EEE3 100%);
-    --gradient-card: linear-gradient(160deg, #FFFFFF 0%, #FAF7F2 100%);
-    --gradient-hero: linear-gradient(135deg, #FAF7F2 0%, #F9EFE6 50%, #F4C2C2 100%);
-    --gradient-text: linear-gradient(135deg, #1B4332 0%, #C8A24A 100%);
+    --gradient-primary: linear-gradient(135deg, #4A1D6B 0%, #6B3D96 60%, #C8A24A 100%);
+    --gradient-soft: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+    --gradient-card: linear-gradient(160deg, #FFFFFF 0%, #FAFAFA 100%);
+    --gradient-hero: linear-gradient(135deg, #FFFFFF 0%, #F5F0FF 50%, #F4C2C2 100%);
+    --gradient-text: linear-gradient(135deg, #4A1D6B 0%, #C8A24A 100%);
     --gradient-rose: linear-gradient(135deg, #F4C2C2 0%, #E8B6B6 100%);
     --gradient-gold: linear-gradient(135deg, #C8A24A 0%, #E0C075 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.45) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 8px 28px -10px rgba(27, 67, 50, 0.08);
-    --shadow-card: 0 18px 50px -22px rgba(27, 67, 50, 0.18);
-    --shadow-elevated: 0 32px 80px -28px rgba(27, 67, 50, 0.22);
-    --shadow-glow: 0 24px 60px -22px rgba(27, 67, 50, 0.25);
+    --shadow-soft: 0 8px 28px -10px rgba(74, 29, 107, 0.08);
+    --shadow-card: 0 18px 50px -22px rgba(74, 29, 107, 0.18);
+    --shadow-elevated: 0 32px 80px -28px rgba(74, 29, 107, 0.22);
+    --shadow-glow: 0 24px 60px -22px rgba(74, 29, 107, 0.25);
     --shadow-glow-gold: 0 22px 60px -22px rgba(200, 162, 74, 0.45);
     --shadow-glow-rose: 0 22px 60px -22px rgba(244, 194, 194, 0.6);
     --shadow-inner-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
 
-    --sidebar-background: 36 39% 96%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 11%;
-    --sidebar-primary: 155 47% 16%;
-    --sidebar-primary-foreground: 36 39% 97%;
+    --sidebar-primary: 270 55% 30%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 350 71% 86%;
-    --sidebar-accent-foreground: 155 47% 16%;
-    --sidebar-border: 36 18% 86%;
-    --sidebar-ring: 155 47% 22%;
+    --sidebar-accent-foreground: 270 55% 30%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 270 50% 32%;
   }
 }
 
@@ -229,33 +229,33 @@
     @apply backdrop-blur-2xl bg-white/65 border border-white/70;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
-      0 18px 48px -22px rgba(27, 67, 50, 0.18);
+      0 18px 48px -22px rgba(74, 29, 107, 0.18);
   }
 
   .glass-strong {
     @apply backdrop-blur-2xl bg-white/85 border border-white/80;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
-      0 26px 60px -26px rgba(27, 67, 50, 0.22);
+      0 26px 60px -26px rgba(74, 29, 107, 0.22);
   }
 
   .glass-card {
     @apply backdrop-blur-xl bg-white/80 border border-white/70;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.85),
-      0 18px 44px -20px rgba(27, 67, 50, 0.14);
+      0 18px 44px -20px rgba(74, 29, 107, 0.14);
   }
 
   .glass-cream {
-    @apply backdrop-blur-xl bg-cream-50/85 border border-cream-200/80;
+    @apply backdrop-blur-xl bg-white/85 border border-white/80;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.8),
-      0 14px 40px -22px rgba(27, 67, 50, 0.12);
+      0 14px 40px -22px rgba(74, 29, 107, 0.12);
   }
 
   /* Hairline */
   .hairline {
-    @apply border border-cream-200/80;
+    @apply border border-border/80;
   }
 
   /* Luxury divider */
@@ -264,7 +264,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(27, 67, 50, 0.18) 50%,
+      rgba(74, 29, 107, 0.18) 50%,
       transparent 100%
     );
   }
@@ -282,13 +282,13 @@
   /* Hero background grid */
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(27, 67, 50, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(27, 67, 50, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(74, 29, 107, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 29, 107, 0.05) 1px, transparent 1px);
     background-size: 64px 64px;
   }
 
   .bg-dots {
-    background-image: radial-gradient(rgba(27, 67, 50, 0.15) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(74, 29, 107, 0.15) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
@@ -298,7 +298,7 @@
   }
   .btn-primary:hover {
     @apply shadow-glow -translate-y-0.5;
-    background: linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%);
+    background: linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%);
   }
 
   .btn-gold {
@@ -311,15 +311,15 @@
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium tracking-tight text-foreground bg-white/70 border border-cream-200 transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium tracking-tight text-foreground bg-white border border-border transition-all duration-300;
   }
   .btn-outline:hover {
-    @apply bg-white border-primary/40 -translate-y-0.5;
+    @apply bg-muted border-primary/40 -translate-y-0.5 shadow-soft;
   }
 
   /* Pill chip */
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-white/70 border border-cream-200 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/80;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white border border-border px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/80;
   }
 
   .chip-active {
@@ -354,26 +354,26 @@
 
   /* Premium card */
   .card-luxury {
-    @apply relative rounded-3xl bg-white border border-cream-200/70 overflow-hidden;
+    @apply relative rounded-3xl bg-white border border-border/60 overflow-hidden;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
-      0 18px 50px -22px rgba(27, 67, 50, 0.14);
+      0 18px 50px -22px rgba(74, 29, 107, 0.14);
   }
 
   /* Hero overlay */
   .hero-overlay {
     background: linear-gradient(
       180deg,
-      rgba(250, 247, 242, 0.4) 0%,
-      rgba(250, 247, 242, 0.85) 65%,
-      rgba(250, 247, 242, 1) 100%
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.85) 65%,
+      rgba(255, 255, 255, 1) 100%
     );
   }
 
   /* Petal / leaf decorative shapes */
   .petal-shadow {
     box-shadow:
-      0 30px 70px -20px rgba(27, 67, 50, 0.18),
+      0 30px 70px -20px rgba(74, 29, 107, 0.18),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
   }
 }
@@ -457,4 +457,21 @@
 @keyframes draw-line {
   0% { transform: scaleX(0); }
   100% { transform: scaleX(1); }
+}
+
+@keyframes vibrate {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-2px) rotate(-1deg); }
+  20% { transform: translateX(2px) rotate(1deg); }
+  30% { transform: translateX(-2px) rotate(-1deg); }
+  40% { transform: translateX(2px) rotate(1deg); }
+  50% { transform: translateX(-1px) rotate(-0.5deg); }
+  60% { transform: translateX(1px) rotate(0.5deg); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  90% { transform: translateX(-0.5px); }
+}
+
+.animate-vibrate {
+  animation: vibrate 0.6s ease-in-out infinite;
 }

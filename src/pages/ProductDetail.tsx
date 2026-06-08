@@ -21,6 +21,7 @@ import { giftApi } from "@/lib/api";
 import { toast } from "sonner";
 import ClientNavbar from "@/components/ClientNavbar";
 import Footer from "@/components/Footer";
+import ReviewSection from "@/components/ReviewSection";
 import GradientOrbs from "@/components/luxury/GradientOrbs";
 import MotionSection from "@/components/luxury/MotionSection";
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
@@ -107,7 +108,7 @@ const ProductDetail = () => {
               className="inline-flex items-center gap-2 h-12 px-6 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all"
               style={{
                 background:
-                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
               }}
             >
               <ArrowLeft className="w-4 h-4" />
@@ -165,7 +166,7 @@ const ProductDetail = () => {
                     className="relative aspect-[4/5] sm:aspect-[5/6] rounded-3xl overflow-hidden bg-white border border-cream-200/80 shadow-elevated"
                     style={{
                       boxShadow:
-                        "0 30px 80px -28px rgba(27, 67, 50, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
+                        "0 30px 80px -28px rgba(74, 29, 107, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
                     }}
                   >
                     {!imgLoaded && (
@@ -294,7 +295,7 @@ const ProductDetail = () => {
                           className="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-[0.2em] text-primary-foreground shadow-soft"
                           style={{
                             background:
-                              "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                              "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                           }}
                         >
                           {product.size}
@@ -370,7 +371,7 @@ const ProductDetail = () => {
                           !isAdded
                             ? {
                                 background:
-                                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                               }
                             : undefined
                         }
@@ -402,8 +403,8 @@ const ProductDetail = () => {
                               className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-soft"
                               style={{
                                 background:
-                                  "linear-gradient(135deg, rgba(27, 67, 50, 0.1), rgba(244, 194, 194, 0.18))",
-                                border: "1px solid rgba(27, 67, 50, 0.15)",
+                                  "linear-gradient(135deg, rgba(74, 29, 107, 0.1), rgba(244, 194, 194, 0.18))",
+                                border: "1px solid rgba(74, 29, 107, 0.15)",
                               }}
                             >
                               <feature.icon
@@ -434,6 +435,12 @@ const ProductDetail = () => {
           </div>
         </section>
       </main>
+
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-transparent via-cream/30 to-transparent">
+        <div className="container mx-auto px-4 lg:px-6">
+          <ReviewSection giftId={id as string} />
+        </div>
+      </section>
 
       <Footer />
     </div>

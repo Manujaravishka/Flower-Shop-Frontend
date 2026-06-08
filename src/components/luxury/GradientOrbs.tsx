@@ -23,7 +23,7 @@ interface OrbConfig {
 }
 
 const COLOR_MAP: Record<OrbColor, string> = {
-  sage: "radial-gradient(circle, hsl(155 47% 30% / 0.32) 0%, transparent 70%)",
+  sage: "radial-gradient(circle, hsl(270 55% 30% / 0.32) 0%, transparent 70%)",
   rose: "radial-gradient(circle, hsl(350 71% 80% / 0.55) 0%, transparent 70%)",
   gold: "radial-gradient(circle, hsl(43 56% 70% / 0.45) 0%, transparent 70%)",
   cream: "radial-gradient(circle, hsl(36 60% 90% / 0.7) 0%, transparent 70%)",

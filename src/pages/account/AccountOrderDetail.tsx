@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
 import { apiClient } from "@/lib/axios";
+import { orderApi } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowLeft, Clock, Package, Truck, CheckCircle, XCircle,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface OrderItem {
   giftId?: string;
@@ -56,9 +58,9 @@ const statusConfig: Record<
   processing: {
     icon: Package,
     label: "Processing",
-    bg: "rgba(27,67,50,0.1)",
-    text: "#1B4332",
-    border: "rgba(27,67,50,0.25)",
+    bg: "rgba(74,29,107,0.1)",
+    text: "#4A1D6B",
+    border: "rgba(74,29,107,0.25)",
   },
   shipped: {
     icon: Truck,
@@ -70,9 +72,9 @@ const statusConfig: Record<
   delivered: {
     icon: CheckCircle,
     label: "Delivered",
-    bg: "rgba(27,67,50,0.18)",
-    text: "#0E2B1E",
-    border: "rgba(27,67,50,0.4)",
+    bg: "rgba(74,29,107,0.18)",
+    text: "#1F0D33",
+    border: "rgba(74,29,107,0.4)",
   },
   cancelled: {
     icon: XCircle,
@@ -108,6 +110,7 @@ const AccountOrderDetail = () => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -144,6 +147,21 @@ const AccountOrderDetail = () => {
       cancelled = true;
     };
   }, [id]);
+
+  const handleCancel = async () => {
+    if (!order) return;
+    setCancelling(true);
+    try {
+      await orderApi.cancel(order._id);
+      setOrder({ ...order, status: "cancelled" });
+      toast.success("Order cancelled successfully");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Cancel failed";
+      toast.error(message);
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -191,14 +209,27 @@ const AccountOrderDetail = () => {
             Placed on {new Date(order.orderDate).toLocaleString()}
           </p>
         </div>
-        <Badge
-          variant="outline"
-          className="gap-1.5 px-3 py-1.5"
-          style={{ background: cfg.bg, color: cfg.text, borderColor: cfg.border }}
-        >
-          <StatusIcon className="w-3.5 h-3.5" strokeWidth={2} />
-          {cfg.label}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge
+            variant="outline"
+            className="gap-1.5 px-3 py-1.5"
+            style={{ background: cfg.bg, color: cfg.text, borderColor: cfg.border }}
+          >
+            <StatusIcon className="w-3.5 h-3.5" strokeWidth={2} />
+            {cfg.label}
+          </Badge>
+          {(order.status === "pending" || order.status === "processing") && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCancel}
+              disabled={cancelling}
+              className="text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-300"
+            >
+              {cancelling ? "Cancelling..." : "Cancel order"}
+            </Button>
+          )}
+        </div>
       </div>
 
       <Card className="border-cream-200/80 shadow-soft">

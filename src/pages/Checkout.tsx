@@ -174,7 +174,7 @@ const Checkout = () => {
                           step >= s.num
                             ? {
                                 background:
-                                  "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                               }
                             : undefined
                         }
@@ -233,7 +233,7 @@ const Checkout = () => {
                             step >= 1
                               ? {
                                   background:
-                                    "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                 }
                               : undefined
                           }
@@ -336,7 +336,7 @@ const Checkout = () => {
                             className="group inline-flex items-center gap-2 h-12 px-6 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:pointer-events-none"
                             style={{
                               background:
-                                "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                                "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                             }}
                           >
                             Continue to payment
@@ -391,7 +391,7 @@ const Checkout = () => {
                             step >= 2
                               ? {
                                   background:
-                                    "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                 }
                               : undefined
                           }
@@ -435,7 +435,7 @@ const Checkout = () => {
                                       isSelected
                                         ? {
                                             background:
-                                              "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                              "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                           }
                                         : undefined
                                     }
@@ -475,7 +475,7 @@ const Checkout = () => {
                                         className="w-2.5 h-2.5 rounded-full"
                                         style={{
                                           background:
-                                            "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                            "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                         }}
                                       />
                                     )}
@@ -492,7 +492,7 @@ const Checkout = () => {
                             className="group w-full h-13 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
                             style={{
                               background:
-                                "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                                "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                             }}
                           >
                             {isLoading ? (
@@ -562,7 +562,7 @@ const Checkout = () => {
                                 <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full text-primary-foreground text-[10px] font-semibold flex items-center justify-center shadow-soft"
                                   style={{
                                     background:
-                                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                                   }}
                                 >
                                   {item.quantity}
@@ -621,7 +621,7 @@ const Checkout = () => {
                           style={{
                             background:
                               "linear-gradient(135deg, rgba(244, 194, 194, 0.18), rgba(200, 162, 74, 0.08))",
-                            border: "1px solid rgba(27, 67, 50, 0.15)",
+                            border: "1px solid rgba(74, 29, 107, 0.15)",
                           }}
                         >
                           <Truck

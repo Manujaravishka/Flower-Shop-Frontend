@@ -57,7 +57,7 @@ interface ImageSlot {
 
 const MAX_SLOTS = 5;
 const SIZE_OPTIONS = ["SMALL", "MEDIUM", "LARGE"];
-const CATEGORY_OPTIONS = ["POT", "BOUQUET", "VASE", "ARRANGEMENT"];
+const CATEGORY_OPTIONS = ["POT", "BOQUETS", "FLOWERS", "KEYTAG", "GIFTBOX"];
 
 const emptyForm = {
   name: "",
@@ -176,29 +176,27 @@ const AdminProducts = () => {
     setSaving(true);
     try {
       if (editing) {
-        await giftApi.updateDetails({
-          giftId: editing._id,
+        await giftApi.updateDetails(editing._id, {
           name: form.name,
           description: form.description,
           price: Number(form.price),
           colour: form.colour,
           size: form.size,
-          category: form.category,
+          category: [form.category],
         });
 
         const removed = slots
           .filter((s) => s.existing && s.removeExisting)
           .map((s) => s.existing!);
         for (const img of removed) {
-          await giftApi.deleteImages({ giftId: editing._id, publicId: img.public_id });
+          await giftApi.deleteImages(editing._id, img.public_id);
         }
 
         const newFiles = slots.filter((s) => s.file);
         if (newFiles.length > 0) {
           const fd = new FormData();
-          fd.append("giftId", editing._id);
-          newFiles.forEach((s) => s.file && fd.append("images", s.file));
-          await giftApi.updateImages(fd);
+          newFiles.forEach((s) => s.file && fd.append("image", s.file));
+          await giftApi.updateImages(editing._id, fd);
         }
         toast.success("Product updated");
       } else {
@@ -209,7 +207,7 @@ const AdminProducts = () => {
         fd.append("colour", form.colour);
         fd.append("size", form.size);
         fd.append("category", form.category);
-        slots.forEach((s) => s.file && fd.append("images", s.file));
+        slots.forEach((s) => s.file && fd.append("image", s.file));
         await giftApi.create(fd);
         toast.success("Product created");
       }
@@ -227,11 +225,10 @@ const AdminProducts = () => {
     if (!window.confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
     try {
       for (const img of p.mediaUrl ?? []) {
-        await giftApi.deleteImages({ giftId: p._id, publicId: img.public_id });
+        await giftApi.deleteImages(p._id, img.public_id);
       }
-      // Backend has no standalone delete for the product; we just remove all
-      // images and let an admin follow up via API if the product must vanish.
-      toast.success("Product images removed");
+      await giftApi.delete(p._id);
+      toast.success("Product deleted");
       fetchProducts();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Delete failed";

@@ -63,7 +63,7 @@ const Cart = () => {
                   className="group inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   Browse collection
@@ -180,7 +180,7 @@ const Cart = () => {
                                       className="px-2 py-0.5 rounded-full text-[9px] font-medium uppercase tracking-[0.18em] text-primary-foreground"
                                       style={{
                                         background:
-                                          "linear-gradient(135deg, #1B4332 0%, #C8A24A 130%)",
+                                          "linear-gradient(135deg, #4A1D6B 0%, #C8A24A 130%)",
                                       }}
                                     >
                                       <Sparkles className="w-2.5 h-2.5 inline-block -mt-0.5 mr-1" />
@@ -323,7 +323,7 @@ const Cart = () => {
                           className="group flex items-center justify-center gap-2 h-13 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all"
                           style={{
                             background:
-                              "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                              "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                           }}
                         >
                           Proceed to checkout

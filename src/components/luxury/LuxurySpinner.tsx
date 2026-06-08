@@ -12,7 +12,7 @@ const LuxurySpinner = ({ size = 32, className = "" }: LuxurySpinnerProps) => {
         className="absolute inset-0 rounded-full"
         style={{
           background:
-            "conic-gradient(from 0deg, transparent 0%, #1B4332 50%, #C8A24A 100%)",
+            "conic-gradient(from 0deg, transparent 0%, #4A1D6B 50%, #C8A24A 100%)",
         }}
         animate={{ rotate: 360 }}
         transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}

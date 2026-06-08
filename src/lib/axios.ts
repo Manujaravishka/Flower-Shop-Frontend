@@ -26,15 +26,15 @@ const PUBLIC_ENDPOINTS = [
   // "/customer/orders",  // requires auth — handled by interceptor
   "/library/getAll",
   "/library/get",
-  "/library/findByName",
-  "/library/find-by-name",
+
   "/cart/get",
   "/cart/add",
   "/cart/update",
   "/cart/remove",
   "/cart/clear",
-  "/order/create",
-  "/payment/process",
+  "/ai/generate",
+  // "/order/create",   // requires auth
+  // "/payment/process", // requires auth
 ];
 
 function isPublicRequest(url: string | undefined): boolean {
@@ -136,9 +136,6 @@ function redirectAfterForbidden(currentPath: string): void {
  */
 export const apiClient: AxiosInstance = axios.create({
   baseURL: env.apiBaseUrl,
-  headers: {
-    "Content-Type": "application/json",
-  },
   timeout: 20000,
 });
 

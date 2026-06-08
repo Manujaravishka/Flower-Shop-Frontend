@@ -97,7 +97,7 @@ const ClientNavbar = () => {
                   className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-soft transition-transform duration-500 group-hover:scale-105"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   <Flower2
@@ -182,7 +182,7 @@ const ClientNavbar = () => {
                     className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] sm:min-w-[20px] sm:h-5 px-1 rounded-full text-primary-foreground text-[10px] sm:text-[11px] font-semibold flex items-center justify-center shadow-soft"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1B4332 0%, #2D5A45 100%)",
+                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 100%)",
                     }}
                   >
                     {totalItems}
@@ -198,7 +198,7 @@ const ClientNavbar = () => {
                         className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold text-primary-foreground"
                         style={{
                           background:
-                            "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                            "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                         }}
                       >
                         {userInitials}

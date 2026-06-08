@@ -34,9 +34,9 @@ const Footer = () => {
             className="relative rounded-3xl sm:rounded-[2rem] overflow-hidden"
             style={{
               background:
-                "linear-gradient(135deg, #1B4332 0%, #2D5A45 70%, #C8A24A 130%)",
+                "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 70%, #C8A24A 130%)",
               boxShadow:
-                "0 30px 80px -30px rgba(27, 67, 50, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.08)",
+                "0 30px 80px -30px rgba(74, 29, 107, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.08)",
             }}
           >
             <div className="absolute inset-0 opacity-20">
@@ -102,7 +102,7 @@ const Footer = () => {
                   className="w-10 h-10 rounded-full flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   <Flower2

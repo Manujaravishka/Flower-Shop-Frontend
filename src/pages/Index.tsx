@@ -186,7 +186,7 @@ const Index = () => {
                   className="group inline-flex items-center gap-2 h-14 px-7 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all duration-300"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   Shop the collection
@@ -257,7 +257,7 @@ const Index = () => {
                   className="relative h-full w-full rounded-[2rem] overflow-hidden border border-white/80 shadow-elevated"
                   style={{
                     boxShadow:
-                      "0 40px 90px -30px rgba(27, 67, 50, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
+                      "0 40px 90px -30px rgba(74, 29, 107, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
                   }}
                 >
                   <img
@@ -278,7 +278,7 @@ const Index = () => {
                       className="w-10 h-10 rounded-full flex items-center justify-center shadow-soft"
                       style={{
                         background:
-                          "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                          "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                       }}
                     >
                       <Sparkles
@@ -625,7 +625,7 @@ const Index = () => {
                   className="w-12 h-12 rounded-full flex items-center justify-center text-primary-foreground text-sm font-semibold shadow-soft"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                      "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
                   SL
@@ -674,7 +674,7 @@ const Index = () => {
                       className="group inline-flex items-center gap-2 h-12 px-6 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all"
                       style={{
                         background:
-                          "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                          "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                       }}
                     >
                       <Wand2 className="w-4 h-4" strokeWidth={2} />
@@ -731,7 +731,7 @@ const Index = () => {
                         className="w-10 h-10 rounded-full flex items-center justify-center shadow-soft"
                         style={{
                           background:
-                            "linear-gradient(135deg, #1B4332 0%, #2D5A45 50%, #C8A24A 130%)",
+                            "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                         }}
                       >
                         <Sparkles
