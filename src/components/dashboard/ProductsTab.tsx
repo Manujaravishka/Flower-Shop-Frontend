@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Plus, Edit, Trash2, Package, ImageIcon } from "lucide-react";
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
+import { extractApiErrorMessage } from "@/lib/apiError";
 
 interface ProductImage {
   url: string;
@@ -137,6 +138,20 @@ const ProductsTab = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.name.trim() || !formData.price.trim()) {
+      toast.error("Name and price are required");
+      return;
+    }
+    if (!formData.colour.trim()) {
+      toast.error("Colour is required");
+      return;
+    }
+    if (!editingProduct && imageSlots.every((slot) => !slot.file && !slot.existing)) {
+      toast.error("Please upload at least one image");
+      return;
+    }
+
     try {
       if (editingProduct) {
         await giftApi.updateDetails(editingProduct._id, {
@@ -193,7 +208,7 @@ const ProductsTab = () => {
       const fetchGifts = fetchProducts();
       console.log("Fetched gifts:", fetchGifts);
     } catch (error) {
-      toast.error("Failed to save product");
+      toast.error(extractApiErrorMessage(error, "Failed to save product"));
     }
   };
 

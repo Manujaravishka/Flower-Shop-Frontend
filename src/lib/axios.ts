@@ -16,17 +16,13 @@ const PUBLIC_ENDPOINTS = [
   "/auth/login",
   "/auth/register",
   "/auth/refresh-token",
-  "/auth/forgot-password",
   "/auth/send-otp",
   "/auth/verify-otp",
   "/gift/all",
   "/gift/new-arrivals",
-  "/gift/get",
   "/customer/create",
   // "/customer/orders",  // requires auth — handled by interceptor
   "/library/getAll",
-  "/library/get",
-
   "/cart/get",
   "/cart/add",
   "/cart/update",
@@ -142,7 +138,11 @@ export const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem(ACCESS_TOKEN_KEY);
   if (token && !isPublicRequest(config.url)) {
-    config.headers.set("Authorization", `Bearer ${token}`);
+    if (config.headers && typeof (config.headers as any).set === "function") {
+      (config.headers as any).set("Authorization", `Bearer ${token}`);
+    } else if (config.headers && typeof config.headers === "object") {
+      (config.headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
+    }
   }
   return config;
 });

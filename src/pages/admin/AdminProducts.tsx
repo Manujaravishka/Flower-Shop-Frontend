@@ -173,6 +173,18 @@ const AdminProducts = () => {
       toast.error("Name and price are required");
       return;
     }
+    if (!form.colour.trim()) {
+      toast.error("Colour is required");
+      return;
+    }
+    if (!form.category) {
+      toast.error("Category is required");
+      return;
+    }
+    if (!editing && !slots.some((slot) => slot.file || slot.existing)) {
+      toast.error("Please upload at least one image");
+      return;
+    }
     setSaving(true);
     try {
       if (editing) {
