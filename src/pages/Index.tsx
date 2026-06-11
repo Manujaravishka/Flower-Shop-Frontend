@@ -463,10 +463,12 @@ const Index = () => {
                     size={product.size}
                     category={product.category}
                     imageUrl={
-  product.mediaUrl?.[0]?.url
-    ? `http://localhost:3000${product.mediaUrl[0].url}`
-    : "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&h=750&fit=crop"
-}
+                      product.mediaUrl?.[0]?.url
+                        ? product.mediaUrl[0].url.startsWith("http")
+                          ? product.mediaUrl[0].url
+                          : `http://localhost:3000${product.mediaUrl[0].url}`
+                        : "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&h=750&fit=crop"
+                    }
                     isNew
                   />
                 </StaggerItem>

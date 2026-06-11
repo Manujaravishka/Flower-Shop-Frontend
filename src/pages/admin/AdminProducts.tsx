@@ -318,23 +318,20 @@ const AdminProducts = () => {
                       className="rounded-2xl border border-cream-200/80 bg-white overflow-hidden shadow-soft"
                     >
                       <div className="aspect-[4/3] bg-cream-50 grid place-items-center overflow-hidden">
-  {p.mediaUrl?.[0]?.url ? (
-    <img
-      src={`http://localhost:3000${p.mediaUrl[0].url}`}
-      alt={p.name}
-      className="w-full h-full object-cover"
-      onError={(e) => {
-        console.log("Image failed:", `http://localhost:3000${p.mediaUrl[0].url}`);
-        e.currentTarget.style.display = "none";
-      }}
-    />
-  ) : (
-    <ImageIcon
-      className="w-10 h-10 text-muted-foreground/40"
-      strokeWidth={1.5}
-    />
-  )}
-</div>
+                        {p.mediaUrl?.[0]?.url ? (
+                          <img
+                            src={
+                              p.mediaUrl[0].url.startsWith("http")
+                                ? p.mediaUrl[0].url
+                                : `http://localhost:3000${p.mediaUrl[0].url}`
+                            }
+                            alt={p.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <ImageIcon className="w-10 h-10 text-muted-foreground/40" strokeWidth={1.5} />
+                        )}
+                      </div>
                       <div className="p-4 space-y-1.5">
                         <p className="font-display text-lg text-foreground truncate">{p.name}</p>
                         <p className="text-sm text-muted-foreground line-clamp-2">

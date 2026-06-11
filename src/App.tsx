@@ -56,8 +56,8 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/oauth/google/callback" element={<GoogleOAuthCallback />} />
-              <Route path="/verify-otp" element={<OtpVerification />} />
               <Route path="/oauth/callback" element={<GoogleCallback />} />
+              <Route path="/verify-otp" element={<OtpVerification />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/categories" element={<Categories />} />

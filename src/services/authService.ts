@@ -131,6 +131,7 @@ export const getGoogleAuthUrl = (redirectTo = "/account/orders"): string => {
   )}`;
 };
 
+
 /**
  * Pulls the AuthUser out of a backend response.
  *
