@@ -17,6 +17,8 @@ function normalizeBaseUrl(raw: string | undefined): string {
 
 export const env = {
   apiBaseUrl: normalizeBaseUrl(import.meta.env.VITE_API_URL),
+  googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || "",
+  frontendUrl: import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173",
   isDevelopment: import.meta.env.DEV,
   isProduction: import.meta.env.PROD,
   mode: import.meta.env.MODE,

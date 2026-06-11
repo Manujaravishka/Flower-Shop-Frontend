@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { giftApi } from "@/lib/api";
+import { API_BASE_URL } from "@/lib/api";
 import {
   Search,
   X,
@@ -363,7 +364,11 @@ const Products = () => {
                     colour={product.colour}
                     size={product.size}
                     category={product.category}
-                    imageUrl={product.mediaUrl?.[0]?.url}
+                    imageUrl={
+  product.mediaUrl?.[0]?.url
+    ? `http://localhost:3000${product.mediaUrl[0].url}`
+    : undefined
+}
                     onClick={() => navigate(`/product/${product._id}`)}
                   />
                 </StaggerItem>

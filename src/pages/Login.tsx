@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import GradientOrbs from "@/components/luxury/GradientOrbs";
 import MotionSection from "@/components/luxury/MotionSection";
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
+import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 
 const Login = () => {
   const location = useLocation();
@@ -192,6 +193,19 @@ const Login = () => {
                   )}
                 </motion.button>
               </form>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-cream-200" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-3 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              <GoogleOAuthButton />
 
               <p className="mt-6 text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}

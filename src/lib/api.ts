@@ -222,3 +222,4 @@ export const reviewApi = {
 export { extractApiErrorMessage };
 export type { AuthErrorPayload, AuthUser };
 export { authHeaders, authHeadersMultipart, unwrapData };
+export const API_BASE_URL = "http://localhost:3000";

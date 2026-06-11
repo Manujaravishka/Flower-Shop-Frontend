@@ -1,4 +1,5 @@
 import { apiClient, clearAuthStorage } from "@/lib/axios";
+import { env } from "@/lib/env";
 import { extractApiErrorMessage } from "@/lib/apiError";
 import type {
   AuthTokens,
@@ -123,6 +124,12 @@ function persistAuthTokens(tokens: AuthTokens): void {
   localStorage.setItem("accessToken", tokens.accessToken);
   localStorage.setItem("refreshToken", tokens.refreshToken);
 }
+
+export const getGoogleAuthUrl = (redirectTo = "/account/orders"): string => {
+  return `${env.apiBaseUrl}/auth/google?redirectTo=${encodeURIComponent(
+    redirectTo
+  )}`;
+};
 
 /**
  * Pulls the AuthUser out of a backend response.
@@ -260,6 +267,12 @@ export const authService = {
     } catch (error) {
       throw new Error(extractApiErrorMessage(error, "Failed to update profile"));
     }
+  },
+
+  getGoogleAuthUrl(redirectTo = "/account/orders"): string {
+    return `${env.apiBaseUrl}/auth/google?redirectTo=${encodeURIComponent(
+      redirectTo
+    )}`;
   },
 
   logout(): void {

@@ -14,6 +14,8 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OtpVerification from "./pages/OtpVerification";
+import GoogleCallback from "./pages/GoogleCallback";
+import GoogleOAuthCallback from "./pages/GoogleOAuthCallback";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -53,7 +55,9 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/oauth/google/callback" element={<GoogleOAuthCallback />} />
               <Route path="/verify-otp" element={<OtpVerification />} />
+              <Route path="/oauth/callback" element={<GoogleCallback />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/categories" element={<Categories />} />
