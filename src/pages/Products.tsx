@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { giftApi } from "@/lib/api";
-import { API_BASE_URL } from "@/lib/api";
+import { normalizeCategoryString } from "@/lib/category";
+import { filterProducts } from "@/lib/filters";
+import type { Product, FilterState, SortOption } from "@/lib/filters";
+import { env } from "@/lib/env";
 
 import {
   Search,
@@ -23,100 +26,193 @@ import StaggerContainer, {
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
 import { cn } from "@/lib/utils";
 
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  colour: string;
-  size: string;
-  category: string[];
-  mediaUrl: { url: string; public_id: string; _id: string }[];
-}
-
 const categories = ["POT", "BOQUETS"];
 const sizes = ["SMALL", "MEDIUM", "LARGE"];
 const sortOptions = [
-  { id: "featured", label: "Featured" },
-  { id: "price-asc", label: "Price: Low to High" },
-  { id: "price-desc", label: "Price: High to Low" },
-  { id: "name", label: "Name" },
+  { id: "featured" as const, label: "Featured" },
+  { id: "price-asc" as const, label: "Price: Low to High" },
+  { id: "price-desc" as const, label: "Price: High to Low" },
+  { id: "name" as const, label: "Name" },
 ];
 
 const Products = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState("featured");
+  const [searchTerm, setSearchTerm] = useState(
+    () => searchParams.get("q") ?? ""
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    () => {
+      const filter = searchParams.get("filter");
+      if (!filter) return null;
+      const normalized = normalizeCategoryString(filter);
+      return categories.includes(normalized) ? normalized : null;
+    }
+  );
+  const [selectedSize, setSelectedSize] = useState<string | null>(() => {
+    const size = searchParams.get("size");
+    return size ? size.toUpperCase() : null;
+  });
+  const [sortBy, setSortBy] = useState<SortOption>(
+    () => (searchParams.get("sort") as SortOption) ?? "featured"
+  );
   const [view, setView] = useState<"grid" | "large">("grid");
   const [sortOpen, setSortOpen] = useState(false);
-  const navigate = useNavigate();
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    fetchProducts();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setIsLoading(true);
+    fetchProducts(controller.signal);
+    return () => {
+      controller.abort();
+    };
   }, []);
 
-  useEffect(() => {
-    filterProducts();
-  }, [products, searchTerm, selectedCategory, selectedSize, sortBy]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = async (signal?: AbortSignal) => {
     try {
-      const data = await giftApi.getAll({ category: "POT,BOQUETS" });
-      setProducts(Array.isArray(data) ? data : []);
+      const data = await giftApi.getAll({ category: "POT,BOQUETS" }, signal);
+      if (!signal?.aborted) {
+        setAllProducts(Array.isArray(data) ? data : []);
+      }
     } catch (error) {
-      console.error("Failed to fetch products");
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      console.error("Failed to fetch products:", error);
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) {
+        setIsLoading(false);
+      }
     }
   };
 
-  const filterProducts = () => {
-    let filtered = [...products];
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          p.colour.toLowerCase().includes(searchTerm.toLowerCase())
+  const syncToUrl = useCallback(
+    (updates: Partial<FilterState>) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (updates.searchTerm !== undefined) {
+            if (updates.searchTerm) next.set("q", updates.searchTerm);
+            else next.delete("q");
+          }
+          if (updates.selectedCategory !== undefined) {
+            if (updates.selectedCategory) next.set("filter", updates.selectedCategory.toLowerCase());
+            else next.delete("filter");
+          }
+          if (updates.selectedSize !== undefined) {
+            if (updates.selectedSize) next.set("size", updates.selectedSize.toLowerCase());
+            else next.delete("size");
+          }
+          if (updates.sortBy !== undefined) {
+            if (updates.sortBy && updates.sortBy !== "featured") next.set("sort", updates.sortBy);
+            else next.delete("sort");
+          }
+          return next;
+        },
+        { replace: true }
       );
-    }
+    },
+    [setSearchParams]
+  );
 
-    if (selectedCategory) {
-      filtered = filtered.filter((p) => p.category.includes(selectedCategory));
-    }
+  useEffect(() => {
+    const urlSearchTerm = searchParams.get("q") ?? "";
+    const urlFilter = searchParams.get("filter");
+    const urlSize = searchParams.get("size");
+    const urlSort = searchParams.get("sort");
 
-    if (selectedSize) {
-      filtered = filtered.filter((p) => p.size === selectedSize);
-    }
+    const normalizedUrlCategory = urlFilter
+      ? normalizeCategoryString(urlFilter)
+      : null;
+    const urlSelectedCategory =
+      normalizedUrlCategory && categories.includes(normalizedUrlCategory)
+        ? normalizedUrlCategory
+        : null;
+    const urlSelectedSize = urlSize ? urlSize.toUpperCase() : null;
+    const urlSortBy = (urlSort as SortOption) ?? "featured";
 
-    if (sortBy === "price-asc") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sortBy === "price-desc") {
-      filtered.sort((a, b) => b.price - a.price);
-    } else if (sortBy === "name") {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
+    if (urlSearchTerm !== searchTerm) setSearchTerm(urlSearchTerm);
+    if (urlSelectedCategory !== selectedCategory)
+      setSelectedCategory(urlSelectedCategory);
+    if (urlSelectedSize !== selectedSize)
+      setSelectedSize(urlSelectedSize);
+    if (urlSortBy !== sortBy) setSortBy(urlSortBy);
+  }, [searchParams, searchTerm, selectedCategory, selectedSize, sortBy]);
 
-    setFilteredProducts(filtered);
-  };
+  const handleCategoryClick = useCallback(
+    (cat: string) => {
+      setSelectedCategory((prev) => {
+        const next = prev === cat ? null : cat;
+        syncToUrl({ selectedCategory: next });
+        return next;
+      });
+    },
+    [syncToUrl]
+  );
 
-  const clearFilters = () => {
+  const handleSizeClick = useCallback(
+    (size: string) => {
+      setSelectedSize((prev) => {
+        const next = prev === size ? null : size;
+        syncToUrl({ selectedSize: next });
+        return next;
+      });
+    },
+    [syncToUrl]
+  );
+
+  const handleSortChange = useCallback(
+    (id: SortOption) => {
+      setSortBy(id);
+      syncToUrl({ sortBy: id });
+      setSortOpen(false);
+    },
+    [syncToUrl]
+  );
+
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      setSearchTerm(value);
+      syncToUrl({ searchTerm: value });
+    },
+    [syncToUrl]
+  );
+
+  const clearFilters = useCallback(() => {
     setSearchTerm("");
     setSelectedCategory(null);
     setSelectedSize(null);
-  };
+    setSortBy("featured");
+    setSearchParams({}, { replace: true });
+  }, [setSearchParams]);
 
-  const hasActiveFilters = searchTerm || selectedCategory || selectedSize;
+  const hasActiveFilters = searchTerm || selectedCategory || selectedSize || sortBy !== "featured";
+
+  const filteredProducts = useMemo(
+    () =>
+      filterProducts(allProducts, {
+        searchTerm,
+        selectedCategory,
+        selectedSize,
+        sortBy,
+      }),
+    [allProducts, searchTerm, selectedCategory, selectedSize, sortBy]
+  );
+
+  const getImageUrl = useCallback((product: Product): string | undefined => {
+    const url = product.mediaUrl?.[0]?.url;
+    if (!url) return undefined;
+    if (url.startsWith("http")) return url;
+    return `${env.apiBaseUrl.replace("/api/v1", "")}${url}`;
+  }, []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <ClientNavbar />
 
-      {/* Hero */}
       <section className="relative pt-32 sm:pt-40 pb-12 sm:pb-16 overflow-hidden">
         <GradientOrbs variant="subtle" />
         <div className="container mx-auto px-4 lg:px-6 relative">
@@ -138,7 +234,6 @@ const Products = () => {
         </div>
       </section>
 
-      {/* Sticky filter bar */}
       <div className="sticky top-20 z-30 bg-white/85 backdrop-blur-xl border-y border-border/80 shadow-soft">
         <div className="container mx-auto px-4 lg:px-6">
           <div className="py-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -150,13 +245,13 @@ const Products = () => {
                 />
                 <input
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   placeholder="Search by name or colour"
                   className="w-full h-11 pl-11 pr-4 rounded-full bg-white/80 border border-cream-200 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:bg-white transition-all"
                 />
                 {searchTerm && (
                   <button
-                    onClick={() => setSearchTerm("")}
+                    onClick={() => handleSearchChange("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-cream-100 text-muted-foreground hover:text-foreground"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -170,9 +265,7 @@ const Products = () => {
                 <motion.button
                   key={cat}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() =>
-                    setSelectedCategory(selectedCategory === cat ? null : cat)
-                  }
+                  onClick={() => handleCategoryClick(cat)}
                   className={cn(
                     "h-9 px-4 rounded-full text-xs font-medium uppercase tracking-[0.15em] transition-all border",
                     selectedCategory === cat
@@ -198,9 +291,7 @@ const Products = () => {
                 <motion.button
                   key={size}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() =>
-                    setSelectedSize(selectedSize === size ? null : size)
-                  }
+                  onClick={() => handleSizeClick(size)}
                   className={cn(
                     "h-9 px-3.5 rounded-full text-[11px] font-medium uppercase tracking-[0.15em] transition-all border",
                     selectedSize === size
@@ -224,7 +315,6 @@ const Products = () => {
 
               <div className="h-5 w-px bg-cream-200 mx-1 hidden sm:block" />
 
-              {/* Sort dropdown */}
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
@@ -250,10 +340,7 @@ const Products = () => {
                         {sortOptions.map((opt) => (
                           <button
                             key={opt.id}
-                            onClick={() => {
-                              setSortBy(opt.id);
-                              setSortOpen(false);
-                            }}
+                            onClick={() => handleSortChange(opt.id)}
                             className={cn(
                               "w-full text-left px-3 py-2 rounded-xl text-sm transition-colors",
                               sortBy === opt.id
@@ -272,7 +359,6 @@ const Products = () => {
 
               <div className="h-5 w-px bg-cream-200 mx-1 hidden sm:block" />
 
-              {/* View toggle */}
               <div className="hidden sm:flex items-center p-0.5 rounded-full border border-cream-200 bg-white/70">
                 <button
                   onClick={() => setView("grid")}
@@ -304,7 +390,6 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Results */}
       <main className="py-12 sm:py-16">
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex items-center justify-between mb-8">
@@ -333,7 +418,7 @@ const Products = () => {
                 No matches
               </h3>
               <p className="mt-2 text-muted-foreground text-pretty max-w-sm mx-auto">
-                {products.length === 0
+                {allProducts.length === 0
                   ? "Our atelier is being prepared. Please return shortly."
                   : "Try a different search or clear your filters."}
               </p>
@@ -365,13 +450,7 @@ const Products = () => {
                     colour={product.colour}
                     size={product.size}
                     category={product.category}
-                    imageUrl={
-                      product.mediaUrl?.[0]?.url
-                        ? product.mediaUrl[0].url.startsWith("http")
-                          ? product.mediaUrl[0].url
-                          : `http://localhost:3000${product.mediaUrl[0].url}`
-                        : undefined
-                    }
+                    imageUrl={getImageUrl(product)}
                     onClick={() => navigate(`/product/${product._id}`)}
                   />
                 </StaggerItem>

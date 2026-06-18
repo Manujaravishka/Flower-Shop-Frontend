@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Edit, Trash2, Search, Image as ImageIcon, Package } from "lucide-react";
 import { giftApi } from "@/lib/api";
+import { normalizeCategories, normalizeCategoryString } from "@/lib/category";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -125,7 +126,7 @@ const AdminProducts = () => {
       price: String(p.price),
       colour: p.colour ?? "",
       size: p.size ?? "SMALL",
-      category: Array.isArray(p.category) && p.category.length > 0 ? p.category[0] : "POT",
+      category: normalizeCategories(p.category)[0] ?? "POT",
     });
     setSlots(
       Array.from({ length: MAX_SLOTS }, (_, i) => {
@@ -194,7 +195,7 @@ const AdminProducts = () => {
           price: Number(form.price),
           colour: form.colour,
           size: form.size,
-          category: [form.category],
+          category: [normalizeCategoryString(form.category)],
         });
 
         const removed = slots
@@ -218,7 +219,7 @@ const AdminProducts = () => {
         fd.append("price", form.price);
         fd.append("colour", form.colour);
         fd.append("size", form.size);
-        fd.append("category", form.category);
+        fd.append("category", normalizeCategoryString(form.category));
         slots.forEach((s) => s.file && fd.append("image", s.file));
         await giftApi.create(fd);
         toast.success("Product created");
@@ -255,7 +256,7 @@ const AdminProducts = () => {
       (p) =>
         p.name.toLowerCase().includes(q) ||
         (p.colour ?? "").toLowerCase().includes(q) ||
-        (Array.isArray(p.category) ? p.category.join(" ") : "").toLowerCase().includes(q)
+        normalizeCategories(p.category).join(" ").toLowerCase().includes(q)
     );
   }, [products, search]);
 

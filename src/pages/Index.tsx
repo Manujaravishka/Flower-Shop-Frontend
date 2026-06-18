@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "@/lib/api";
+import { env } from "@/lib/env";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -466,7 +466,7 @@ const Index = () => {
                       product.mediaUrl?.[0]?.url
                         ? product.mediaUrl[0].url.startsWith("http")
                           ? product.mediaUrl[0].url
-                          : `http://localhost:3000${product.mediaUrl[0].url}`
+                          : `${env.apiBaseUrl.replace("/api/v1", "")}${product.mediaUrl[0].url}`
                         : "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&h=750&fit=crop"
                     }
                     isNew
@@ -589,8 +589,11 @@ const Index = () => {
                     size={product.size}
                     category={product.category}
                     imageUrl={
-                      product.mediaUrl?.[0]?.url ||
-                      "https://images.unsplash.com/photo-1518882605630-8eb256a2c4c7?w=600&h=750&fit=crop"
+                      product.mediaUrl?.[0]?.url
+                        ? product.mediaUrl[0].url.startsWith("http")
+                          ? product.mediaUrl[0].url
+                          : `${env.apiBaseUrl.replace("/api/v1", "")}${product.mediaUrl[0].url}`
+                        : "https://images.unsplash.com/photo-1518882605630-8eb256a2c4c7?w=600&h=750&fit=crop"
                     }
                     isBestSeller
                   />

@@ -80,7 +80,8 @@ export const authApi = {
 };
 
 export const giftApi = {
-  getAll: async (params?: Record<string, string>) => unwrapData((await apiClient.get("/gift/all", { params })).data),
+  getAll: async (params?: Record<string, string>, signal?: AbortSignal) =>
+    unwrapData((await apiClient.get("/gift/all", { params, signal })).data),
   getById: async (giftId: string) =>
     unwrapData((await apiClient.get(`/gift/${giftId}`)).data),
   create: async (formData: FormData) =>

@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { giftApi } from "@/lib/api";
+import { normalizedCategoryIncludes, normalizeCategoryString, normalizeCategories } from "@/lib/category";
+import { env } from "@/lib/env";
 import { Grid3X3, LayoutGrid, Sparkles, ArrowUpRight } from "lucide-react";
 import ClientNavbar from "@/components/ClientNavbar";
 import Footer from "@/components/Footer";
@@ -14,63 +16,82 @@ import StaggerContainer, {
 import LuxurySpinner from "@/components/luxury/LuxurySpinner";
 import { cn } from "@/lib/utils";
 
+const CATEGORY_TABS = [
+  { id: "all", label: "Everything" },
+  { id: "bouquets", label: "Bouquets" },
+  { id: "pot", label: "Pots" },
+  { id: "flowers", label: "Flowers" },
+  { id: "keytag", label: "Keytags" },
+  { id: "giftbox", label: "Gift boxes" },
+  { id: "custom", label: "Bespoke" },
+] as const;
+
 const Categories = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"grid" | "large">("grid");
 
-  const filter = searchParams.get("filter") || "all";
-
-  const categories = [
-    { id: "all", label: "Everything" },
-    { id: "boquets", label: "Bouquets" },
-    { id: "pot", label: "Pots" },
-    { id: "flowers", label: "Flowers" },
-    { id: "keytag", label: "Keytags" },
-    { id: "giftbox", label: "Gift boxes" },
-    { id: "custom", label: "Bespoke" },
-  ];
+  const filter = searchParams.get("filter")?.toLowerCase() ?? "all";
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const data = await giftApi.getAll();
-        if (Array.isArray(data)) {
+        const data = await giftApi.getAll(undefined, controller.signal);
+        if (!controller.signal.aborted && Array.isArray(data)) {
           setProducts(data);
         }
       } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
     fetchProducts();
+    return () => controller.abort();
   }, []);
 
-  const filteredProducts = products.filter((product) => {
-    if (filter === "all") return true;
-    return product.category.some((cat: string) =>
-      cat.toLowerCase().includes(filter.toLowerCase())
-    );
-  });
+  const filteredProducts = useMemo(
+    () =>
+      products.filter((product) => {
+        if (filter === "all") return true;
+        return normalizedCategoryIncludes(product.category, filter);
+      }),
+    [products, filter]
+  );
 
-  const categoriesWithCount = categories.map((cat) => ({
-    ...cat,
-    count:
-      cat.id === "all"
-        ? products.length
-        : products.filter((p) =>
-            p.category.some((c: string) => c.toLowerCase().includes(cat.id))
-          ).length,
-  }));
+  const getImageUrl = (product: any): string => {
+    const url = product.mediaUrl?.[0]?.url;
+    if (!url) return "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&h=750&fit=crop";
+    if (url.startsWith("http")) return url;
+    return `${env.apiBaseUrl.replace("/api/v1", "")}${url}`;
+  };
+
+  const categoriesWithCount = useMemo(
+    () =>
+      CATEGORY_TABS.map((cat) => ({
+        ...cat,
+        count:
+          cat.id === "all"
+            ? products.length
+            : products.filter((p) =>
+                normalizeCategories(p.category).includes(
+                  normalizeCategoryString(cat.id)
+                )
+              ).length,
+      })),
+    [products]
+  );
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <ClientNavbar />
       <main className="pt-28 sm:pt-32 pb-16 sm:pb-24">
-        {/* Hero */}
         <section className="relative overflow-hidden">
           <GradientOrbs variant="hero" />
           <div className="container mx-auto px-4 lg:px-6 relative py-16 sm:py-20">
@@ -99,7 +120,6 @@ const Categories = () => {
           </div>
         </section>
 
-        {/* Filters + Toolbar */}
         <div className="sticky top-20 z-30 bg-white/85 backdrop-blur-xl border-y border-border/80 shadow-soft">
           <div className="container mx-auto px-4 lg:px-6">
             <MotionSection>
@@ -146,7 +166,6 @@ const Categories = () => {
           </div>
         </div>
 
-        {/* Toolbar */}
         <div className="container mx-auto px-4 lg:px-6 py-8 sm:py-10">
           <div className="flex items-center justify-between mb-8">
             <p className="text-sm text-muted-foreground">
@@ -211,10 +230,7 @@ const Categories = () => {
                     colour={product.colour}
                     size={product.size}
                     category={product.category}
-                    imageUrl={
-                      product.mediaUrl?.[0]?.url ||
-                      "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&h=750&fit=crop"
-                    }
+                    imageUrl={getImageUrl(product)}
                   />
                 </StaggerItem>
               ))}
