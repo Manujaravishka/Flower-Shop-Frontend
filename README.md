@@ -2,6 +2,9 @@
 
 A premium e-commerce frontend for a luxury floral brand. Built with **React 18**, **TypeScript**, **Vite 7**, **Tailwind CSS**, and **shadcn/ui**, featuring a refined design system with custom animations and glassmorphism aesthetics.
 
+**Deployed Site:** [`https://flower-boquet-frontend.vercel.app`](https://flower-boquet-frontend.vercel.app)
+**Backend API:** [`https://flower-shop-backend-rosy.vercel.app`](https://flower-shop-backend-rosy.vercel.app)
+
 ---
 
 ## Architecture
