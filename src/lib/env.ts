@@ -7,7 +7,7 @@
  *   - TypeScript always sees the variable (we also extend ImportMetaEnv in vite-env.d.ts).
  */
 
-const FALLBACK_API_URL = "https://flower-boquet-backend.vercel.app/api/v1";
+const FALLBACK_API_URL = "https://flower-shop-backend-rosy.vercel.app/api/v1";
 
 function normalizeBaseUrl(raw: string | undefined): string {
   const value = (raw ?? "").trim();
