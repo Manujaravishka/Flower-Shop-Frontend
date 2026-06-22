@@ -11,13 +11,6 @@ import {
   LayoutDashboard,
   ArrowUpRight,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 const Navbar = () => {
@@ -37,15 +30,6 @@ const Navbar = () => {
     logout();
     navigate("/");
   };
-
-  const userInitials = user?.name
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()
-    : "MF";
 
   return (
     <motion.nav
@@ -102,85 +86,25 @@ const Navbar = () => {
             View Store
           </Link>
 
-          {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 rounded-full border border-cream-200/80 hover:border-primary/30 hover:bg-white/70 transition-all">
-                  <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold text-primary-foreground"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
-                    }}
-                  >
-                    {userInitials}
-                  </div>
-                  <span className="text-[13px] font-medium text-foreground/90">
-                    {user?.name?.split(" ")[0] || "Admin"}
-                  </span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-64 mt-2 glass-strong border-cream-200/80 rounded-2xl p-2"
-              >
-                <div className="px-3 py-2.5 mb-1">
-                  <p className="text-sm font-semibold text-foreground">
-                    {user?.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {user?.email}
-                  </p>
-                </div>
-                <DropdownMenuSeparator className="bg-cream-200" />
-                <DropdownMenuItem asChild>
-                  <Link
-                    to="/admin"
-                    className="cursor-pointer rounded-xl px-3 py-2 text-sm focus:bg-primary/[0.06]"
-                  >
-                    <LayoutDashboard className="w-4 h-4 mr-2.5" />
-                    Admin console
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    to="/account/profile"
-                    className="cursor-pointer rounded-xl px-3 py-2 text-sm focus:bg-primary/[0.06]"
-                  >
-                    <User className="w-4 h-4 mr-2.5" />
-                    Account
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-cream-200" />
-                <DropdownMenuItem
-                  onClick={handleLogout}
-                  className="cursor-pointer rounded-xl px-3 py-2 text-sm text-rose-deep focus:bg-rose/15 focus:text-rose-deep"
-                >
-                  <LogOut className="w-4 h-4 mr-2.5" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                to="/login"
-                className="px-4 py-2 text-[13px] font-medium text-foreground/75 hover:text-primary transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 text-[13px] font-medium rounded-full text-primary-foreground shadow-soft hover:shadow-glow transition-shadow"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
-                }}
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
+          <Link
+            to="/login"
+            className="group relative inline-flex items-center gap-2 px-5 py-2 text-[13px] font-semibold rounded-full text-primary-foreground shadow-soft transition-all duration-300 hover:shadow-glow hover:scale-105 active:scale-95 overflow-hidden"
+          >
+            <span className="absolute inset-0 rounded-full transition-all duration-300 group-hover:scale-110"
+              style={{
+                background:
+                  "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
+              }}
+            />
+            <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{
+                background:
+                  "linear-gradient(135deg, #6B3D96 0%, #C8A24A 50%, #4A1D6B 130%)",
+              }}
+            />
+            <User className="relative w-3.5 h-3.5" />
+            <span className="relative">Sign In</span>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
