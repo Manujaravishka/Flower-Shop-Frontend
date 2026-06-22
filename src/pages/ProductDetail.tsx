@@ -18,6 +18,7 @@ import {
   Minus,
 } from "lucide-react";
 import { giftApi } from "@/lib/api";
+import { env } from "@/lib/env";
 import { toast } from "sonner";
 import ClientNavbar from "@/components/ClientNavbar";
 import Footer from "@/components/Footer";
@@ -54,6 +55,11 @@ const ProductDetail = () => {
     if (id) fetchProduct();
   }, [id]);
 
+  const resolveImageUrl = (url: string) => {
+    if (!url || url.startsWith("http")) return url;
+    return `${env.apiBaseUrl.replace("/api/v1", "")}${url}`;
+  };
+
   const handleAddToCart = () => {
     if (!product) return;
     for (let i = 0; i < quantity; i++) {
@@ -64,7 +70,7 @@ const ProductDetail = () => {
         colour: product.colour,
         size: product.size,
         category: product.category,
-        imageUrl: product.mediaUrl?.[0]?.url,
+        imageUrl: resolveImageUrl(product.mediaUrl?.[0]?.url ?? ""),
       });
     }
     setIsAdded(true);
@@ -123,7 +129,7 @@ const ProductDetail = () => {
 
   const images =
     product.mediaUrl?.length > 0
-      ? product.mediaUrl.map((m: any) => m.url)
+      ? product.mediaUrl.map((m: any) => resolveImageUrl(m.url))
       : [
           "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=900&h=900&fit=crop",
         ];
