@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Edit, Trash2, Search, Image as ImageIcon, Package } from "lucide-react";
 import { giftApi } from "@/lib/api";
+import { env } from "@/lib/env";
 import { normalizeCategories, normalizeCategoryString } from "@/lib/category";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -324,7 +325,7 @@ const AdminProducts = () => {
                             src={
                               p.mediaUrl[0].url.startsWith("http")
                                 ? p.mediaUrl[0].url
-                                : `http://localhost:3000${p.mediaUrl[0].url}`
+                                : `${env.apiBaseUrl.replace("/api/v1", "")}${p.mediaUrl[0].url}`
                             }
                             alt={p.name}
                             className="w-full h-full object-cover"

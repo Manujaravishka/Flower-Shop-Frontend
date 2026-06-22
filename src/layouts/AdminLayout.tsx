@@ -5,9 +5,7 @@ import {
   Package,
   ShoppingBag,
   Users,
-  Gift,
   LogOut,
-  //werwerwerw
   Image as ImageIcon,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -18,7 +16,7 @@ const navItems = [
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/users", label: "Customers", icon: Users },
-  { to: "/admin/gifts", label: "Custom bouquets", icon: Gift },
+  { to: "/admin/gifts", label: "Gallery", icon: ImageIcon },
 ];
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {

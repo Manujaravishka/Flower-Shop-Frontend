@@ -52,6 +52,17 @@ const Index = () => {
     fetchProducts();
   }, []);
 
+  const hero = products[0];
+  const heroSecondary = products[1];
+  const heroTertiary = products[2];
+
+  const resolveImageUrl = (product: any, fallback: string): string => {
+    const url = product?.mediaUrl?.[0]?.url;
+    if (!url) return fallback;
+    if (url.startsWith("http")) return url;
+    return `${env.apiBaseUrl.replace("/api/v1", "")}${url}`;
+  };
+
   const newDrops = products.slice(0, 4);
   const bestSellers = products.slice(0, 4);
 
@@ -120,56 +131,78 @@ const Index = () => {
       <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-24 pb-16">
         <GradientOrbs variant="hero" />
 
-        {/* Subtle grid */}
-        <div className="absolute inset-0 bg-grid opacity-[0.5] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,black,transparent)]" />
+        {/* Premium gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background/80" />
+
+        {/* Refined grid pattern */}
+        <div className="absolute inset-0 bg-grid opacity-[0.3] [mask-image:radial-gradient(ellipse_70%_55%_at_50%_40%,black,transparent)]" />
+
+        {/* Ornamental gold accent top-right */}
+        <div className="absolute top-20 right-[8%] w-px h-32 bg-gradient-to-b from-gold/40 to-transparent hidden lg:block" />
+        <div className="absolute top-20 right-[8%] w-2 h-2 rounded-full bg-gold/60 hidden lg:block" />
+
+        {/* Ornamental gold accent bottom-left */}
+        <div className="absolute bottom-28 left-[6%] w-px h-24 bg-gradient-to-t from-gold/30 to-transparent hidden lg:block" />
+        <div className="absolute bottom-52 left-[6%] w-2 h-2 rounded-full bg-gold/50 hidden lg:block" />
 
         <div className="container mx-auto px-4 lg:px-6 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             {/* Left content */}
             <div className="lg:col-span-7 xl:col-span-7">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-cream-200 shadow-soft mb-7"
+                className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/80 backdrop-blur-xl border border-gold/20 shadow-soft mb-8"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
                 </span>
-                <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-foreground/85">
+                <span className="h-3 w-px bg-gold/30" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/80">
                   Spring Collection · 2026
                 </span>
               </motion.div>
 
-              <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-medium text-foreground leading-[0.96] tracking-[-0.025em] text-balance">
-                <span className="block overflow-hidden">
+              <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-medium text-foreground leading-[0.92] tracking-[-0.03em] text-balance">
+                <span className="block overflow-hidden pb-1">
                   <motion.span
                     initial={{ y: "110%" }}
                     animate={{ y: 0 }}
                     transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     className="block"
                   >
-                    Flowers, considered.
+                    Flowers,
+                    <span className="italic font-serif text-primary/70"> considered.</span>
                   </motion.span>
                 </span>
-                <span className="block overflow-hidden mt-1">
+                <span className="block overflow-hidden pb-1">
                   <motion.span
                     initial={{ y: "110%" }}
                     animate={{ y: 0 }}
                     transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="block italic font-serif gradient-text-gold"
+                    className="block"
                   >
-                    Arrangements, told.
+                    Arrangements,
+                    <span className="italic font-serif gradient-text-gold"> told.</span>
                   </motion.span>
                 </span>
               </h1>
+
+              {/* Decorative divider */}
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="origin-left h-px w-24 bg-gradient-to-r from-gold/60 via-gold/30 to-transparent mt-6"
+              />
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="mt-7 text-base sm:text-lg text-muted-foreground max-w-xl text-pretty leading-relaxed"
+                className="mt-6 text-base sm:text-lg text-muted-foreground/90 max-w-xl text-pretty leading-relaxed font-light tracking-wide"
               >
                 An atelier of floristry crafting seasonal, hand-tied compositions
                 for the modern home. From the in-bloom to the imagined — delivered
@@ -180,28 +213,28 @@ const Index = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.65 }}
-                className="mt-9 flex flex-wrap gap-3"
+                className="mt-10 flex flex-wrap gap-4"
               >
                 <Link
                   to="/products"
-                  className="group inline-flex items-center gap-2 h-14 px-7 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all duration-300"
+                  className="group inline-flex items-center gap-2.5 h-14 px-8 rounded-full text-primary-foreground text-sm font-medium shadow-soft hover:shadow-glow hover:-translate-y-0.5 transition-all duration-500"
                   style={{
                     background:
                       "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
                   }}
                 >
-                  Shop the collection
+                  <span>Shop the collection</span>
                   <ArrowRight
-                    className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
                     strokeWidth={2}
                   />
                 </Link>
                 <Link
                   to="/customize"
-                  className="group inline-flex items-center gap-2 h-14 px-7 rounded-full bg-white/85 border border-cream-200 text-foreground hover:bg-white hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-soft transition-all duration-300 text-sm font-medium"
+                  className="group inline-flex items-center gap-2.5 h-14 px-8 rounded-full bg-white/80 backdrop-blur-sm border border-gold/20 text-foreground hover:bg-white hover:border-gold/40 hover:-translate-y-0.5 hover:shadow-soft transition-all duration-500 text-sm font-medium"
                 >
                   <Sparkles className="w-4 h-4 text-gold" strokeWidth={2} />
-                  Design with AI
+                  <span>Design with AI</span>
                 </Link>
               </motion.div>
 
@@ -210,7 +243,7 @@ const Index = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.85 }}
-                className="mt-14 pt-8 border-t border-cream-200/80 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-4"
+                className="mt-16 pt-8 border-t border-cream-200/60 grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-4"
               >
                 {stats.map((stat, i) => (
                   <motion.div
@@ -218,6 +251,7 @@ const Index = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 1 + i * 0.08 }}
+                    className="relative"
                   >
                     <p className="font-display text-2xl sm:text-3xl font-medium text-foreground flex items-center gap-1.5 tracking-tight">
                       {stat.value}
@@ -228,7 +262,7 @@ const Index = () => {
                         />
                       )}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1 tracking-wide">
+                    <p className="text-[11px] text-muted-foreground/70 mt-1.5 tracking-[0.15em] uppercase font-medium">
                       {stat.label}
                     </p>
                   </motion.div>
@@ -244,39 +278,52 @@ const Index = () => {
                 transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="relative aspect-[3/4] max-w-md mx-auto lg:max-w-none"
               >
-                {/* Decorative frame */}
+                {/* Decorative glow frame */}
                 <div
-                  className="absolute -inset-4 rounded-[2rem] blur-2xl opacity-60"
+                  className="absolute -inset-5 rounded-[2.5rem] blur-3xl opacity-50"
                   style={{
                     background:
-                      "linear-gradient(135deg, rgba(244, 194, 194, 0.5), rgba(200, 162, 74, 0.35))",
+                      "linear-gradient(135deg, rgba(244, 194, 194, 0.4), rgba(200, 162, 74, 0.25), rgba(74, 29, 107, 0.15))",
                   }}
                 />
 
-                {/* Main image */}
+                {/* Gold border frame */}
+                <div className="absolute -inset-[3px] rounded-[2.2rem] bg-gradient-to-b from-gold/30 via-gold/10 to-gold/30 pointer-events-none" />
+
+                {/* Main image container */}
                 <div
-                  className="relative h-full w-full rounded-[2rem] overflow-hidden border border-white/80 shadow-elevated"
+                  className="relative h-full w-full rounded-[2rem] overflow-hidden shadow-elevated"
                   style={{
                     boxShadow:
                       "0 40px 90px -30px rgba(74, 29, 107, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
                   }}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=900&h=1200&fit=crop"
-                    alt="Featured floral arrangement"
-                    className="w-full h-full object-cover"
+                    src={resolveImageUrl(hero, "https://images.unsplash.com/photo-1617952214407-7b658b13cf82?w=900&h=1200&fit=crop")}
+                    alt={hero?.name || "Featured floral arrangement"}
+                    className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform"
+                    style={{ transitionDuration: "7s" }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cream/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                  {/* Inner vignette */}
+                  <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.15)] pointer-events-none rounded-[2rem]" />
 
                   {/* Floating preview card top */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.1, duration: 0.8 }}
-                    className="absolute top-5 left-5 right-5 flex items-center gap-3 px-4 py-3 rounded-2xl glass-strong shadow-soft"
+                    initial={{ opacity: 0, y: 20, x: -10 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    transition={{ delay: 1.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-5 left-5 right-5 flex items-center gap-3 px-4 py-3 rounded-2xl"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.72) 100%)",
+                      backdropFilter: "blur(24px)",
+                      WebkitBackdropFilter: "blur(24px)",
+                      border: "1px solid rgba(255,255,255,0.85)",
+                      boxShadow: "0 26px 60px -26px rgba(74, 29, 107, 0.22), inset 0 1px 0 0 rgba(255,255,255,0.95)",
+                    }}
                   >
                     <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center shadow-soft"
+                      className="w-10 h-10 rounded-full flex items-center justify-center shadow-soft flex-shrink-0"
                       style={{
                         background:
                           "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
@@ -291,7 +338,7 @@ const Index = () => {
                       <p className="text-xs font-medium text-foreground truncate">
                         Atelier AI Preview
                       </p>
-                      <p className="text-[10px] text-muted-foreground">
+                      <p className="text-[10px] text-muted-foreground/80 mt-0.5">
                         Rose · Peony · Eucalyptus
                       </p>
                     </div>
@@ -299,51 +346,53 @@ const Index = () => {
 
                   {/* Floating card bottom */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.3, duration: 0.8 }}
-                    className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl glass-strong shadow-soft"
+                    initial={{ opacity: 0, y: 20, x: 10 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    transition={{ delay: 1.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute bottom-5 left-5 right-5 p-5 rounded-2xl"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.72) 100%)",
+                      backdropFilter: "blur(24px)",
+                      WebkitBackdropFilter: "blur(24px)",
+                      border: "1px solid rgba(255,255,255,0.85)",
+                      boxShadow: "0 26px 60px -26px rgba(74, 29, 107, 0.22), inset 0 1px 0 0 rgba(255,255,255,0.95)",
+                    }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                          Featured
-                        </p>
-                        <p className="font-display text-base font-medium text-foreground mt-0.5">
-                          Aurora Bloom
-                        </p>
-                      </div>
-                      <p className="font-display text-lg font-semibold gradient-text-gold">
-                        Rs. 6,200
-                      </p>
-                    </div>
+                    <p className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground/70 font-medium">
+                      Featured
+                    </p>
+                    <p className="font-display text-base sm:text-lg font-medium text-foreground mt-1">
+                      {hero?.name || "Aurora Bloom"}
+                    </p>
                   </motion.div>
                 </div>
 
-                {/* Secondary floating image */}
+                {/* Secondary floating image with gold frame */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, x: -20 }}
+                  initial={{ opacity: 0, scale: 0.8, x: -30 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   transition={{ delay: 0.9, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute -bottom-6 -left-6 sm:-left-12 w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-4 border-white shadow-elevated hidden sm:block"
+                  className="absolute -bottom-8 -left-6 sm:-left-14 w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-elevated hidden sm:block"
                 >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10 pointer-events-none" />
                   <img
-                    src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=400&fit=crop"
-                    alt="Succulent"
+                    src={resolveImageUrl(heroSecondary, "https://images.unsplash.com/photo-1599733589046-10c7f0f8a4e8?w=400&h=400&fit=crop")}
+                    alt={heroSecondary?.name || "Botanical"}
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
 
-                {/* Tertiary floating element */}
+                {/* Tertiary floating element with gold frame */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                  initial={{ opacity: 0, scale: 0.8, x: 30 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   transition={{ delay: 1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute -top-4 -right-4 sm:-right-10 w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-4 border-white shadow-elevated hidden sm:block"
+                  className="absolute -top-6 -right-6 sm:-right-12 w-20 h-20 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-elevated hidden sm:block"
                 >
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent z-10 pointer-events-none" />
                   <img
-                    src="https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400&h=400&fit=crop"
-                    alt="Sunflower"
+                    src={resolveImageUrl(heroTertiary, "https://images.unsplash.com/photo-1567696153798-9111f9cd3d1d?w=400&h=400&fit=crop")}
+                    alt={heroTertiary?.name || "Modern floral"}
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -359,9 +408,14 @@ const Index = () => {
           transition={{ delay: 1.6, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:block"
         >
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-            <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent" />
+          <div className="flex flex-col items-center gap-2.5 text-muted-foreground/60">
+            <span className="text-[9px] uppercase tracking-[0.35em] font-medium">Scroll</span>
+            <div className="w-px h-16 bg-gradient-to-b from-gold/40 via-primary/20 to-transparent" />
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1 h-1 rounded-full bg-gold/60"
+            />
           </div>
         </motion.div>
       </section>

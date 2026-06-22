@@ -190,8 +190,8 @@ export const libraryApi = {
     unwrapData((await apiClient.put(`/library/${libraryId}`, { title })).data),
   updateImages: async (libraryId: string, formData: FormData) =>
     unwrapData((await apiClient.put(`/library/${libraryId}/images`, formData)).data),
-  deleteImage: async (libraryId: string) =>
-    unwrapData((await apiClient.delete(`/library/${libraryId}/image`)).data),
+  deleteImage: async (libraryId: string, publicId?: string) =>
+    unwrapData((await apiClient.delete(`/library/${libraryId}/image`, { params: { publicId } })).data),
   delete: async (libraryId: string) =>
     unwrapData((await apiClient.delete(`/library/${libraryId}`)).data),
   findByName: async (title: string) =>
@@ -223,4 +223,3 @@ export const reviewApi = {
 export { extractApiErrorMessage };
 export type { AuthErrorPayload, AuthUser };
 export { authHeaders, authHeadersMultipart, unwrapData };
-export const API_BASE_URL = "http://localhost:3000";

@@ -125,13 +125,6 @@ function persistAuthTokens(tokens: AuthTokens): void {
   localStorage.setItem("refreshToken", tokens.refreshToken);
 }
 
-export const getGoogleAuthUrl = (redirectTo = "/account/orders"): string => {
-  return `${env.apiBaseUrl}/auth/google?redirectTo=${encodeURIComponent(
-    redirectTo
-  )}`;
-};
-
-
 /**
  * Pulls the AuthUser out of a backend response.
  *

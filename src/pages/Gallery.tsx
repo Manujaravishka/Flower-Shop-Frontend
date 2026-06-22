@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { libraryApi } from "@/lib/api";
+import { env } from "@/lib/env";
 import { Search, X, Image as ImageIcon, ArrowUpRight } from "lucide-react";
 import ClientNavbar from "@/components/ClientNavbar";
 import Footer from "@/components/Footer";
@@ -38,6 +39,12 @@ const Gallery = () => {
       setIsLoading(false);
     }
   };
+
+  const resolveImageUrl = useCallback((url: string) => {
+    if (!url) return "";
+    if (url.startsWith("http")) return url;
+    return `${env.apiBaseUrl.replace("/api/v1", "")}${url}`;
+  }, []);
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
@@ -177,8 +184,8 @@ const Gallery = () => {
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent z-10" />
                     {item.mediaUrl && item.mediaUrl.length > 0 ? (
                       <div className="relative overflow-hidden">
-                        <motion.img
-                          src={item.mediaUrl[0].url}
+                          <motion.img
+                          src={resolveImageUrl(item.mediaUrl[0].url)}
                           alt={item.title}
                           className="w-full h-auto object-cover"
                           initial={{ scale: 1 }}
@@ -247,7 +254,7 @@ const Gallery = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={selectedImage.url}
+                src={resolveImageUrl(selectedImage.url)}
                 alt={selectedImage.title}
                 className="w-full max-h-[80vh] object-contain rounded-2xl shadow-elevated border border-white/10"
               />

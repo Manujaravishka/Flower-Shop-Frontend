@@ -6,6 +6,7 @@ interface StaggerContainerProps {
   className?: string;
   delayChildren?: number;
   staggerChildren?: number;
+  staggerKey?: string;
 }
 
 const StaggerContainer = ({
@@ -13,9 +14,11 @@ const StaggerContainer = ({
   className = "",
   delayChildren = 0.1,
   staggerChildren = 0.08,
+  staggerKey,
 }: StaggerContainerProps) => {
   return (
     <motion.div
+      key={staggerKey}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}

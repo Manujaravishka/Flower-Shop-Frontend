@@ -89,8 +89,45 @@ const Products = () => {
     }
   };
 
+  const ignoreUrlSync = useRef(false);
+
+  const applyParams = useCallback((params: URLSearchParams) => {
+    const urlSearchTerm = params.get("q") ?? "";
+    const urlFilter = params.get("filter");
+    const urlSize = params.get("size");
+    const urlSort = params.get("sort");
+
+    const normalizedUrlCategory = urlFilter
+      ? normalizeCategoryString(urlFilter)
+      : null;
+    const urlSelectedCategory =
+      normalizedUrlCategory && categories.includes(normalizedUrlCategory)
+        ? normalizedUrlCategory
+        : null;
+    const urlSelectedSize = urlSize ? urlSize.toUpperCase() : null;
+    const urlSortBy = (urlSort as SortOption) ?? "featured";
+
+    setSearchTerm(urlSearchTerm);
+    setSelectedCategory(urlSelectedCategory);
+    setSelectedSize(urlSelectedSize);
+    setSortBy(urlSortBy);
+  }, []);
+
+  useEffect(() => {
+    applyParams(searchParams);
+  }, []);
+
+  useEffect(() => {
+    if (ignoreUrlSync.current) {
+      ignoreUrlSync.current = false;
+      return;
+    }
+    applyParams(searchParams);
+  }, [searchParams]);
+
   const syncToUrl = useCallback(
     (updates: Partial<FilterState>) => {
+      ignoreUrlSync.current = true;
       setSearchParams(
         (prev) => {
           const next = new URLSearchParams(prev);
@@ -118,50 +155,22 @@ const Products = () => {
     [setSearchParams]
   );
 
-  useEffect(() => {
-    const urlSearchTerm = searchParams.get("q") ?? "";
-    const urlFilter = searchParams.get("filter");
-    const urlSize = searchParams.get("size");
-    const urlSort = searchParams.get("sort");
-
-    const normalizedUrlCategory = urlFilter
-      ? normalizeCategoryString(urlFilter)
-      : null;
-    const urlSelectedCategory =
-      normalizedUrlCategory && categories.includes(normalizedUrlCategory)
-        ? normalizedUrlCategory
-        : null;
-    const urlSelectedSize = urlSize ? urlSize.toUpperCase() : null;
-    const urlSortBy = (urlSort as SortOption) ?? "featured";
-
-    if (urlSearchTerm !== searchTerm) setSearchTerm(urlSearchTerm);
-    if (urlSelectedCategory !== selectedCategory)
-      setSelectedCategory(urlSelectedCategory);
-    if (urlSelectedSize !== selectedSize)
-      setSelectedSize(urlSelectedSize);
-    if (urlSortBy !== sortBy) setSortBy(urlSortBy);
-  }, [searchParams, searchTerm, selectedCategory, selectedSize, sortBy]);
-
   const handleCategoryClick = useCallback(
     (cat: string) => {
-      setSelectedCategory((prev) => {
-        const next = prev === cat ? null : cat;
-        syncToUrl({ selectedCategory: next });
-        return next;
-      });
+      const next = selectedCategory === cat ? null : cat;
+      setSelectedCategory(next);
+      syncToUrl({ selectedCategory: next });
     },
-    [syncToUrl]
+    [syncToUrl, selectedCategory]
   );
 
   const handleSizeClick = useCallback(
     (size: string) => {
-      setSelectedSize((prev) => {
-        const next = prev === size ? null : size;
-        syncToUrl({ selectedSize: next });
-        return next;
-      });
+      const next = selectedSize === size ? null : size;
+      setSelectedSize(next);
+      syncToUrl({ selectedSize: next });
     },
-    [syncToUrl]
+    [syncToUrl, selectedSize]
   );
 
   const handleSortChange = useCallback(
@@ -186,6 +195,7 @@ const Products = () => {
     setSelectedCategory(null);
     setSelectedSize(null);
     setSortBy("featured");
+    ignoreUrlSync.current = true;
     setSearchParams({}, { replace: true });
   }, [setSearchParams]);
 
@@ -433,6 +443,7 @@ const Products = () => {
             </MotionSection>
           ) : (
             <StaggerContainer
+              staggerKey={`${selectedCategory}-${selectedSize}-${sortBy}-${searchTerm}`}
               className={cn(
                 "grid gap-5 sm:gap-6",
                 view === "grid"

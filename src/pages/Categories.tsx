@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { giftApi } from "@/lib/api";
-import { normalizedCategoryIncludes, normalizeCategoryString, normalizeCategories } from "@/lib/category";
+import { normalizeCategoryString, normalizeCategories } from "@/lib/category";
 import { env } from "@/lib/env";
 import { Grid3X3, LayoutGrid, Sparkles, ArrowUpRight } from "lucide-react";
 import ClientNavbar from "@/components/ClientNavbar";
@@ -31,8 +31,12 @@ const Categories = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"grid" | "large">("grid");
+  const ignoreUrlSync = useRef(false);
+  const initialMount = useRef(true);
 
-  const filter = searchParams.get("filter")?.toLowerCase() ?? "all";
+  const [activeFilter, setActiveFilter] = useState<string>(
+    () => searchParams.get("filter")?.toLowerCase() ?? "all"
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -56,13 +60,46 @@ const Categories = () => {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    if (ignoreUrlSync.current) {
+      ignoreUrlSync.current = false;
+      return;
+    }
+    const urlFilter = searchParams.get("filter")?.toLowerCase() ?? "all";
+    if (urlFilter !== activeFilter) {
+      setActiveFilter(urlFilter);
+    }
+  }, [searchParams, activeFilter]);
+
+  useEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      return;
+    }
+    ignoreUrlSync.current = true;
+    setSearchParams(
+      activeFilter === "all" ? {} : { filter: activeFilter },
+      { replace: true }
+    );
+  }, [activeFilter, setSearchParams]);
+
+  const handleFilterClick = useCallback((id: string) => {
+    setActiveFilter(id);
+  }, []);
+
+  const categoryMatches = (product: any, expected: string): boolean => {
+    const productCats = product.category ? normalizeCategories(product.category) : [];
+    const expectedNorm = normalizeCategoryString(expected);
+    return expectedNorm ? productCats.includes(expectedNorm) : false;
+  };
+
   const filteredProducts = useMemo(
-    () =>
-      products.filter((product) => {
-        if (filter === "all") return true;
-        return normalizedCategoryIncludes(product.category, filter);
-      }),
-    [products, filter]
+    () => {
+      return activeFilter === "all"
+        ? products
+        : products.filter((product) => categoryMatches(product, activeFilter));
+    },
+    [products, activeFilter]
   );
 
   const getImageUrl = (product: any): string => {
@@ -79,11 +116,7 @@ const Categories = () => {
         count:
           cat.id === "all"
             ? products.length
-            : products.filter((p) =>
-                normalizeCategories(p.category).includes(
-                  normalizeCategoryString(cat.id)
-                )
-              ).length,
+            : products.filter((p) => categoryMatches(p, cat.id)).length,
       })),
     [products]
   );
@@ -128,19 +161,15 @@ const Categories = () => {
                   <motion.button
                     key={cat.id}
                     whileTap={{ scale: 0.96 }}
-                    onClick={() =>
-                      setSearchParams(
-                        cat.id === "all" ? {} : { filter: cat.id }
-                      )
-                    }
+                    onClick={() => handleFilterClick(cat.id)}
                     className={cn(
                       "h-10 px-5 rounded-full text-xs font-medium uppercase tracking-[0.15em] transition-all border flex items-center gap-2 flex-shrink-0 shadow-soft",
-                      filter === cat.id
+                      activeFilter === cat.id
                         ? "text-primary-foreground border-transparent"
                         : "bg-white border-cream-200 text-foreground/70 hover:text-primary hover:border-primary/30"
                     )}
                     style={
-                      filter === cat.id
+                      activeFilter === cat.id
                         ? {
                             background:
                               "linear-gradient(135deg, #4A1D6B 0%, #6B3D96 50%, #C8A24A 130%)",
@@ -152,7 +181,7 @@ const Categories = () => {
                     <span
                       className={cn(
                         "px-1.5 py-0.5 rounded-full text-[10px] font-semibold",
-                        filter === cat.id
+                        activeFilter === cat.id
                           ? "bg-foreground/20 text-primary-foreground"
                           : "bg-cream-100 text-muted-foreground"
                       )}
@@ -176,7 +205,7 @@ const Categories = () => {
               {filteredProducts.length === 1 ? "piece" : "pieces"}
               <span className="opacity-40 mx-2">·</span>
               <span className="text-foreground/80">
-                {categoriesWithCount.find((c) => c.id === filter)?.label}
+                {categoriesWithCount.find((c) => c.id === activeFilter)?.label}
               </span>
             </p>
             <div className="hidden sm:flex items-center p-0.5 rounded-full border border-cream-200 bg-white/80 shadow-soft">
@@ -213,6 +242,7 @@ const Categories = () => {
             </div>
           ) : filteredProducts.length > 0 ? (
             <StaggerContainer
+              staggerKey={activeFilter}
               className={cn(
                 "grid gap-5 sm:gap-6",
                 view === "grid"
@@ -251,7 +281,7 @@ const Categories = () => {
                 collection.
               </p>
               <button
-                onClick={() => setSearchParams({})}
+                onClick={() => handleFilterClick("all")}
                 className="mt-6 inline-flex items-center gap-2 h-11 px-5 rounded-full bg-white border border-cream-200 text-sm font-medium text-foreground hover:bg-cream-50 hover:border-primary/30 transition-all group"
               >
                 View all
